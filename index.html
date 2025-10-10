@@ -318,7 +318,7 @@
         <!-- Hero Section -->
         <section id="home" class="min-h-screen flex items-center justify-center text-center hero-gradient-bg pt-20">
             <div class="hero-card container mx-auto px-6 py-10 rounded-2xl glass-effect">
-                <img src="https://placehold.co/150x150/1F2937/FFFFFF?text=HJ" alt="Profile Picture" class="w-36 h-36 md:w-48 md:h-48 rounded-full mx-auto mb-6 border-4 border-blue-500 shadow-xl">
+                <img src="assets/profile.jpg" alt="Profile Picture" class="w-36 h-36 md:w-48 md:h-48 rounded-full mx-auto mb-6 border-4 border-blue-500 shadow-xl object-cover">
                 <h1 class="text-4xl md:text-6xl font-bold text-white mb-3">Hi, I'm Hammad Javeed</h1>
                 <p class="text-lg md:text-2xl text-blue-400 font-medium mb-6">Full-Stack & Mobile App Developer</p>
                 <p class="max-w-2xl mx-auto text-gray-400 mb-8">
@@ -337,7 +337,7 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-12">About Me</h2>
                 <div id="about-card" class="animated-border-card about-card glass-effect p-8 md:p-12 rounded-2xl flex flex-col md:flex-row items-center gap-12">
                     <div class="md:w-1/3">
-                        <img src="https://placehold.co/400x400/1F2337/4F46E5?text=About+Me" alt="About Me Image" class="rounded-lg shadow-2xl">
+                        <img src="assets/about.jpg" alt="About Me Image" class="rounded-lg shadow-2xl w-full h-auto object-cover">
                     </div>
                     <div class="md:w-2/3">
                         <h3 class="text-2xl font-semibold text-blue-400 mb-4">Who I Am?</h3>
@@ -846,7 +846,7 @@
                 allSkills.forEach(skill => {
                     const skillCardHTML = `
                         <div class="skill-wrapper w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 flex-shrink-0 p-2">
-                            <div class="skill-item flex flex-col items-center p-4 glass-effect rounded-lg h-48 justify-center">
+                            <div class="skill-item flex flex-col items-center p-4 glass-effect rounded-lg h-56 justify-center">
                                 <!-- Corner borders will be added by JS -->
                                 ${skill.svg}
                                 <span class="font-medium text-sm text-center">${skill.name}</span>
