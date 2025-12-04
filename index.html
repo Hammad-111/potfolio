@@ -539,6 +539,13 @@
             scroll-padding-top: 80px;
         }
 
+        /* Adjust scroll padding for mobile */
+        @media (max-width: 768px) {
+            html {
+                scroll-padding-top: 100px;
+            }
+        }
+
         /* --- Neon Pulse Preloader --- */
         #preloader {
             position: fixed;
@@ -608,9 +615,9 @@
         /* SVG Progress Ring */
         .progress-ring {
             position: absolute;
-            top: 0;
-            left: 0;
-            transform: rotate(-90deg);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-90deg);
         }
 
         .progress-ring-circle {
