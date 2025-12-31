@@ -315,7 +315,6 @@
         .skills-slider-container {
             display: flex;
             overflow-x: auto;
-            scroll-behavior: smooth;
             gap: 24px;
             padding: 40px 10px;
             scroll-snap-type: x mandatory;
@@ -1330,7 +1329,6 @@
         .project-slider-container {
             display: flex;
             overflow-x: auto;
-            scroll-behavior: smooth;
             gap: 20px;
             padding: 20px 0;
             scroll-snap-type: x mandatory;

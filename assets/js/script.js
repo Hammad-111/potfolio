@@ -1,9 +1,50 @@
-// Initialize AOS
-AOS.init({
-    duration: 1000,
-    once: true,
-    offset: 100,
+// --- Global Selectors ---
+const header = document.getElementById('header');
+const mobileMenu = document.getElementById('mobile-menu');
+
+// --- Initialize Lenis (Smooth Scrolling) ---
+const lenis = new Lenis({
+    lerp: 0.1, // Using lerp for better laptop stability
+    smoothWheel: true,
+    wheelMultiplier: 1,
+    touchMultiplier: 2,
+    infinite: false,
 });
+
+// Sync Lenis with GSAP & ScrollTrigger
+lenis.on('scroll', (e) => {
+    ScrollTrigger.update();
+
+    // Header Glass Effect
+    if (header) {
+        if (e.scroll > 50) {
+            header.classList.add('glass-effect');
+        } else {
+            header.classList.remove('glass-effect');
+        }
+    }
+
+    // Scroll Progress Bar
+    const scrollBar = document.getElementById('scroll-progress');
+    if (scrollBar) {
+        const scrolled = (e.progress * 100);
+        scrollBar.style.width = scrolled + "%";
+    }
+
+    // Refresh AOS on major scroll points if needed (optional but helpful)
+    // AOS.refresh(); 
+});
+
+gsap.ticker.add((time) => {
+    lenis.raf(time * 1000);
+});
+
+gsap.ticker.lagSmoothing(0);
+
+// GSAP ScrollTrigger Configuration for Chrome Stabilization
+gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.normalizeScroll(true);
+ScrollTrigger.config({ limitCallbacks: true });
 
 // Initialize Typed.js
 if (document.getElementById('typed-output')) {
@@ -178,57 +219,51 @@ const allProjects = [
 ];
 
 // --- Existing JS code ---
+// --- AOS Initialization ---
+AOS.init({
+    duration: 1000,
+    once: true,
+    offset: 100,
+});
+
+// --- Mobile Menu Toggle ---
 const mobileMenuButton = document.getElementById('mobile-menu-button');
-const mobileMenu = document.getElementById('mobile-menu');
 if (mobileMenuButton && mobileMenu) {
     mobileMenuButton.addEventListener('click', () => {
         mobileMenu.classList.toggle('hidden');
     });
 }
 
-// --- Smooth Scroll & Mobile Menu Logic (FIXED) ---
+// --- Smooth Scroll & Mobile Menu Logic (Lenis Powered) ---
 document.querySelectorAll('#mobile-menu a, header a[href^="#"]').forEach(link => {
     link.addEventListener('click', function (e) {
-
-        // Close mobile menu if it's open
-        if (mobileMenu) mobileMenu.classList.add('hidden');
-
-        // Manual smooth scroll
         const targetId = this.getAttribute('href');
 
-        // FIX: Ensure the targetId is not just "#" to prevent querySelector error.
         if (targetId && targetId.startsWith('#') && targetId.length > 1) {
-            e.preventDefault(); // Prevent default jump only for valid section links
+            e.preventDefault();
+
+            // Close mobile menu if it's open
+            if (mobileMenu) mobileMenu.classList.add('hidden');
+
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
-                const header = document.getElementById('header');
-                const headerHeight = header ? header.offsetHeight : 0;
-                const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
+                lenis.scrollTo(targetElement, {
+                    offset: - (document.getElementById('header')?.offsetHeight || 0),
+                    duration: 1.5,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
                 });
             }
         }
     });
 });
 
-const header = document.getElementById('header');
-if (header) {
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) { header.classList.add('glass-effect'); }
-        else { header.classList.remove('glass-effect'); }
-    });
-}
+
 const sections = document.querySelectorAll('.section-fade-in');
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
         } else {
-            // This makes the animation re-trigger every time
             entry.target.classList.remove('visible');
         }
     });
@@ -508,429 +543,383 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Staggered animation for skill items on scroll is now handled after population
-});
 
-// --- Initialize Lenis (Smooth Scrolling) ---
-const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    direction: 'vertical',
-    gestureDirection: 'vertical',
-    smooth: true,
-    mouseMultiplier: 1,
-    smoothTouch: false,
-    touchMultiplier: 2,
-});
+    // Preloader Animation
+    window.addEventListener('load', () => {
+        const preloader = document.getElementById('preloader');
+        const progressCircle = document.querySelector('.progress-ring-circle');
+        const scrambleText = document.querySelector('.scramble-text');
+        const nameSubtitle = document.querySelector('.name-subtitle');
+        const pulseContainer = document.querySelector('.pulse-container');
+        const logo = document.querySelector('.preloader-logo');
 
-function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-}
-requestAnimationFrame(raf);
+        // Sound effect function (Web Audio API)
+        const playBeep = () => {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
 
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
 
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
 
-// --- GSAP Animations ---
-gsap.registerPlugin(ScrollTrigger);
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.05);
+        };
 
-// --- Scroll Fix & Preloader Logic ---
+        // Particle burst effect
+        const createParticleBurst = () => {
+            const particleCount = 12;
+            if (!pulseContainer) return;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                pulseContainer.appendChild(particle);
 
-// Force scroll to top on refresh
-if (history.scrollRestoration) {
-    history.scrollRestoration = 'manual';
-}
-window.scrollTo(0, 0);
+                const angle = (i / particleCount) * Math.PI * 2;
+                const distance = 60;
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
 
-// Preloader Animation
-window.addEventListener('load', () => {
-    const preloader = document.getElementById('preloader');
-    const progressCircle = document.querySelector('.progress-ring-circle');
-    const scrambleText = document.querySelector('.scramble-text');
-    const nameSubtitle = document.querySelector('.name-subtitle');
-    const pulseContainer = document.querySelector('.pulse-container');
-    const logo = document.querySelector('.preloader-logo');
-
-    // Sound effect function (Web Audio API)
-    const playBeep = () => {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-
-        oscillator.frequency.value = 800;
-        oscillator.type = 'sine';
-        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
-
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.05);
-    };
-
-    // Particle burst effect
-    const createParticleBurst = () => {
-        const particleCount = 12;
-        if (!pulseContainer) return;
-        for (let i = 0; i < particleCount; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            pulseContainer.appendChild(particle);
-
-            const angle = (i / particleCount) * Math.PI * 2;
-            const distance = 60;
-            const x = Math.cos(angle) * distance;
-            const y = Math.sin(angle) * distance;
-
-            gsap.to(particle, {
-                x: x,
-                y: y,
-                opacity: 0,
-                duration: 0.8,
-                ease: 'power2.out',
-                onComplete: () => particle.remove()
-            });
-        }
-    };
-
-    // Initial particle burst
-    setTimeout(() => createParticleBurst(), 300);
-
-    // Binary Rain Effect
-    const binaryRain = document.getElementById('binary-rain');
-    const createBinaryColumn = () => {
-        if (!binaryRain) return;
-        const column = document.createElement('div');
-        column.className = 'binary-column';
-        column.style.left = Math.random() * 100 + '%';
-        column.style.animationDuration = (Math.random() * 3 + 2) + 's';
-
-        let binaryText = '';
-        for (let i = 0; i < 20; i++) {
-            binaryText += Math.random() > 0.5 ? '1' : '0';
-            binaryText += '<br>';
-        }
-        column.innerHTML = binaryText;
-
-        binaryRain.appendChild(column);
-        setTimeout(() => column.remove(), 5000);
-    };
-
-    // Create binary columns periodically
-    const binaryInterval = setInterval(() => {
-        if (Math.random() > 0.7) createBinaryColumn();
-    }, 200);
-
-    setTimeout(() => clearInterval(binaryInterval), 2500);
-
-    // Scramble text effect with sound
-    const finalText = 'SYSTEM READY';
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*';
-    let scrambleInterval;
-    let iterations = 0;
-
-    if (scrambleText) {
-        scrambleInterval = setInterval(() => {
-            if (Math.random() > 0.7) playBeep(); // Random beeps
-
-            scrambleText.innerText = finalText
-                .split('')
-                .map((char, index) => {
-                    if (index < iterations) {
-                        return finalText[index];
-                    }
-                    return chars[Math.floor(Math.random() * chars.length)];
-                })
-                .join('');
-
-            if (iterations >= finalText.length) {
-                clearInterval(scrambleInterval);
-                // Fade in name after scramble completes
-                gsap.to(nameSubtitle, {
-                    opacity: 1,
+                gsap.to(particle, {
+                    x: x,
+                    y: y,
+                    opacity: 0,
                     duration: 0.8,
-                    delay: 0.3,
-                    ease: 'power2.out'
+                    ease: 'power2.out',
+                    onComplete: () => particle.remove()
                 });
-            }
-            iterations += 1 / 3;
-        }, 30);
-    }
-
-    // Animate progress ring
-    if (progressCircle) {
-        gsap.to(progressCircle, {
-            strokeDashoffset: 0,
-            duration: 2,
-            ease: 'power2.inOut'
-        });
-    }
-
-    // Exit animation after load
-    setTimeout(() => {
-        // Shockwave exit
-        if (pulseContainer) {
-            gsap.to(pulseContainer, {
-                scale: 3,
-                opacity: 0,
-                duration: 0.8,
-                ease: 'power4.in'
-            });
-        }
-
-        if (scrambleText || nameSubtitle) {
-            gsap.to([scrambleText, nameSubtitle], {
-                opacity: 0,
-                y: 20,
-                duration: 0.5,
-                ease: 'power2.in'
-            });
-        }
-
-        setTimeout(() => {
-            if (preloader) preloader.classList.add('hidden');
-            if (document.querySelector('main')) document.querySelector('main').classList.add('loaded');
-
-            // Trigger Hero Animations
-            setTimeout(() => {
-                heroTl.play();
-            }, 300);
-        }, 800);
-    }, 2500);
-});
-
-// Hero Section Timeline (Paused initially)
-const heroTl = gsap.timeline({
-    paused: true,
-    defaults: { ease: "power4.out", duration: 1 }
-});
-
-heroTl.from(".hero-card img", { y: 50, opacity: 0, scale: 0.8, duration: 1, ease: "power4.out" }, "-=0.8")
-    .from(".hero-card h1", { y: 30, opacity: 0, duration: 1, ease: "power4.out" }, "-=0.8")
-    .from(".hero-card p", { y: 20, opacity: 0, stagger: 0.1, duration: 1, ease: "power4.out" }, "-=0.8")
-    .from(".hero-card a", { y: 20, opacity: 0, stagger: 0.1, duration: 1, ease: "power4.out" }, "-=0.8");
-
-// Magnetic Cursor Effect on Profile Image & Hero Card (Desktop only)
-if (window.innerWidth > 768) {
-    const profileImg = document.getElementById('hero-profile-img');
-    const heroCard = document.querySelector('.hero-card');
-    const heroAura = document.querySelector('.hero-aura');
-    const techBadges = document.querySelectorAll('.tech-badge');
-
-    if (heroCard) {
-        heroCard.addEventListener('mousemove', (e) => {
-            const rect = heroCard.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-
-            const moveX = (e.clientX - centerX) * 0.05;
-            const moveY = (e.clientY - centerY) * 0.05;
-
-            // Magnetic Hero Card
-            gsap.to(heroCard, {
-                x: moveX,
-                y: moveY,
-                duration: 0.5,
-                ease: 'power2.out'
-            });
-
-            // Parallax Aura
-            if (heroAura) {
-                gsap.to(heroAura, {
-                    x: moveX * 2,
-                    y: moveY * 2,
-                    duration: 0.8,
-                    ease: 'power2.out'
-                });
-            }
-
-            // Magnetic Profile Image (Subtle)
-            if (profileImg) {
-                gsap.to(profileImg, {
-                    x: (e.clientX - (rect.left + rect.width / 2)) * 0.08,
-                    y: (e.clientY - (rect.top + rect.height / 2)) * 0.08,
-                    duration: 0.5,
-                    ease: 'power2.out'
-                });
-            }
-        });
-
-        heroCard.addEventListener('mouseleave', () => {
-            gsap.to(heroCard, { x: 0, y: 0, duration: 0.5 });
-            if (heroAura) gsap.to(heroAura, { x: 0, y: 0, duration: 0.8 });
-            if (profileImg) gsap.to(profileImg, { x: 0, y: 0, duration: 0.5 });
-        });
-    }
-
-    // Animate Tech Badges (Floating)
-    techBadges.forEach((badge, index) => {
-        gsap.to(badge, {
-            y: "random(-20, 20)",
-            x: "random(-10, 10)",
-            rotation: "random(-15, 15)",
-            duration: "random(2, 4)",
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-            delay: index * 0.2
-        });
-    });
-}
-
-
-// Section Headers ScrollTrigger
-gsap.utils.toArray("section h2").forEach(header => {
-    gsap.from(header, {
-        scrollTrigger: {
-            trigger: header,
-            start: "top 80%",
-            toggleActions: "play none none reverse"
-        },
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out"
-    });
-});
-
-// Initialize AOS (Keep for simple fade-ups if desired, or replace fully with GSAP)
-AOS.init({
-    duration: 1000,
-    once: true,
-    offset: 100,
-});
-
-// --- Project Modal Logic ---
-const projectModal = document.getElementById('project-modal');
-const closeProjectModalBtn = document.getElementById('close-project-modal');
-const modalTitle = document.getElementById('modal-title');
-const modalTech = document.getElementById('modal-tech');
-const modalDesc = document.getElementById('modal-desc');
-const modalImg = document.getElementById('modal-img');
-
-function openProjectModal(project) {
-    if (!projectModal) return;
-
-    modalTitle.textContent = project.title;
-    modalTech.textContent = project.tech;
-    modalDesc.textContent = project.description + " This project demonstrates high-level engineering and attention to detail. Built to be modular and scalable, it addresses specific user needs with a modern interface and robust backend logic.";
-    modalImg.src = `https://placehold.co/800x600/1F2937/4F46E5?text=${project.imgPlaceholder}`;
-
-    projectModal.classList.remove('hidden');
-    // Force reflow for animation
-    projectModal.offsetHeight;
-    projectModal.classList.add('active');
-    document.body.style.overflow = 'hidden'; // Prevent scroll
-}
-
-function closeProjectModal() {
-    if (!projectModal) return;
-    projectModal.classList.remove('active');
-    setTimeout(() => {
-        projectModal.classList.add('hidden');
-        document.body.style.overflow = 'auto';
-    }, 400);
-}
-
-if (closeProjectModalBtn) {
-    closeProjectModalBtn.addEventListener('click', closeProjectModal);
-}
-
-// Close on backdrop click
-if (projectModal) {
-    projectModal.addEventListener('click', (e) => {
-        if (e.target === projectModal) closeProjectModal();
-    });
-}
-
-// Update project cards to be clickable
-function updateProjectCardListeners() {
-    document.querySelectorAll('.project-card').forEach((card, index) => {
-        // Only the main card click opens the modal, not the AI button
-        card.addEventListener('click', (e) => {
-            if (!e.target.closest('.generate-desc-btn')) {
-                openProjectModal(allProjects[index]);
-            }
-        });
-    });
-}
-
-// --- Contact Form Logic ---
-const contactForm = document.getElementById('contact-form');
-if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const btnText = submitBtn.querySelector('span');
-
-        // Basic animation for feedback
-        const originalText = btnText.textContent;
-        btnText.textContent = "Sending...";
-        submitBtn.disabled = true;
-
-        setTimeout(() => {
-            btnText.textContent = "Message Sent! ✓";
-            submitBtn.classList.remove('bg-blue-600');
-            submitBtn.classList.add('bg-green-600');
-            contactForm.reset();
-
-            setTimeout(() => {
-                btnText.textContent = originalText;
-                submitBtn.classList.remove('bg-green-600');
-                submitBtn.classList.add('bg-blue-600');
-                submitBtn.disabled = false;
-            }, 3000);
-        }, 1500);
-    });
-}
-
-// --- Counter Animation ---
-function animateCounters() {
-    const counters = document.querySelectorAll('.counter');
-    const speed = 200;
-
-    counters.forEach(counter => {
-        const updateCount = () => {
-            const target = +counter.getAttribute('data-target');
-            const count = +counter.innerText;
-            const inc = target / speed;
-
-            if (count < target) {
-                counter.innerText = Math.ceil(count + inc);
-                setTimeout(updateCount, 1);
-            } else {
-                counter.innerText = target + "+";
             }
         };
 
-        // Trigger when in view
-        const observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                updateCount();
-                observer.unobserve(counter);
+        // Initial particle burst
+        setTimeout(() => createParticleBurst(), 300);
+
+        // Binary Rain Effect
+        const binaryRain = document.getElementById('binary-rain');
+        const createBinaryColumn = () => {
+            if (!binaryRain) return;
+            const column = document.createElement('div');
+            column.className = 'binary-column';
+            column.style.left = Math.random() * 100 + '%';
+            column.style.animationDuration = (Math.random() * 3 + 2) + 's';
+
+            let binaryText = '';
+            for (let i = 0; i < 20; i++) {
+                binaryText += Math.random() > 0.5 ? '1' : '0';
+                binaryText += '<br>';
             }
-        }, { threshold: 1 });
+            column.innerHTML = binaryText;
 
-        observer.observe(counter);
+            binaryRain.appendChild(column);
+            setTimeout(() => column.remove(), 5000);
+        };
+
+        // Create binary columns periodically
+        const binaryInterval = setInterval(() => {
+            if (Math.random() > 0.7) createBinaryColumn();
+        }, 200);
+
+        setTimeout(() => clearInterval(binaryInterval), 2500);
+
+        // Scramble text effect with sound
+        const finalText = 'SYSTEM READY';
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*';
+        let scrambleInterval;
+        let iterations = 0;
+
+        if (scrambleText) {
+            scrambleInterval = setInterval(() => {
+                if (Math.random() > 0.7) playBeep(); // Random beeps
+
+                scrambleText.innerText = finalText
+                    .split('')
+                    .map((char, index) => {
+                        if (index < iterations) {
+                            return finalText[index];
+                        }
+                        return chars[Math.floor(Math.random() * chars.length)];
+                    })
+                    .join('');
+
+                if (iterations >= finalText.length) {
+                    clearInterval(scrambleInterval);
+                    // Fade in name after scramble completes
+                    gsap.to(nameSubtitle, {
+                        opacity: 1,
+                        duration: 0.8,
+                        delay: 0.3,
+                        ease: 'power2.out'
+                    });
+                }
+                iterations += 1 / 3;
+            }, 30);
+        }
+
+        // Animate progress ring
+        if (progressCircle) {
+            gsap.to(progressCircle, {
+                strokeDashoffset: 0,
+                duration: 2,
+                ease: 'power2.inOut'
+            });
+        }
+
+        // Exit animation after load
+        setTimeout(() => {
+            // Shockwave exit
+            if (pulseContainer) {
+                gsap.to(pulseContainer, {
+                    scale: 3,
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: 'power4.in'
+                });
+            }
+
+            if (scrambleText || nameSubtitle) {
+                gsap.to([scrambleText, nameSubtitle], {
+                    opacity: 0,
+                    y: 20,
+                    duration: 0.5,
+                    ease: 'power2.in'
+                });
+            }
+
+            setTimeout(() => {
+                if (preloader) preloader.classList.add('hidden');
+                if (document.querySelector('main')) document.querySelector('main').classList.add('loaded');
+
+                // Trigger Hero Animations
+                setTimeout(() => {
+                    heroTl.play();
+                }, 300);
+            }, 800);
+        }, 2500);
     });
-}
 
-// --- Scroll Progress Bar ---
-const scrollBar = document.getElementById('scroll-bar');
+    // Hero Section Timeline (Paused initially)
+    const heroTl = gsap.timeline({
+        paused: true,
+        defaults: { ease: "power4.out", duration: 1 }
+    });
 
-window.addEventListener('scroll', () => {
-    if (scrollBar) {
-        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (winScroll / height) * 100;
-        scrollBar.style.width = scrolled + "%";
+    heroTl.from(".hero-card img", { y: 50, opacity: 0, scale: 0.8, duration: 1, ease: "power4.out" }, "-=0.8")
+        .from(".hero-card h1", { y: 30, opacity: 0, duration: 1, ease: "power4.out" }, "-=0.8")
+        .from(".hero-card p", { y: 20, opacity: 0, stagger: 0.1, duration: 1, ease: "power4.out" }, "-=0.8")
+        .from(".hero-card a", { y: 20, opacity: 0, stagger: 0.1, duration: 1, ease: "power4.out" }, "-=0.8");
+
+    // Magnetic Cursor Effect on Profile Image & Hero Card (Desktop only)
+    if (window.innerWidth > 768) {
+        const profileImg = document.getElementById('hero-profile-img');
+        const heroCard = document.querySelector('.hero-card');
+        const heroAura = document.querySelector('.hero-aura');
+        const techBadges = document.querySelectorAll('.tech-badge');
+
+        if (heroCard) {
+            heroCard.addEventListener('mousemove', (e) => {
+                const rect = heroCard.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+
+                const moveX = (e.clientX - centerX) * 0.05;
+                const moveY = (e.clientY - centerY) * 0.05;
+
+                // Magnetic Hero Card
+                gsap.to(heroCard, {
+                    x: moveX,
+                    y: moveY,
+                    duration: 0.5,
+                    ease: 'power2.out'
+                });
+
+                // Parallax Aura
+                if (heroAura) {
+                    gsap.to(heroAura, {
+                        x: moveX * 2,
+                        y: moveY * 2,
+                        duration: 0.8,
+                        ease: 'power2.out'
+                    });
+                }
+
+                // Magnetic Profile Image (Subtle)
+                if (profileImg) {
+                    gsap.to(profileImg, {
+                        x: (e.clientX - (rect.left + rect.width / 2)) * 0.08,
+                        y: (e.clientY - (rect.top + rect.height / 2)) * 0.08,
+                        duration: 0.5,
+                        ease: 'power2.out'
+                    });
+                }
+            });
+
+            heroCard.addEventListener('mouseleave', () => {
+                gsap.to(heroCard, { x: 0, y: 0, duration: 0.5 });
+                if (heroAura) gsap.to(heroAura, { x: 0, y: 0, duration: 0.8 });
+                if (profileImg) gsap.to(profileImg, { x: 0, y: 0, duration: 0.5 });
+            });
+        }
+
+        // Animate Tech Badges (Floating)
+        techBadges.forEach((badge, index) => {
+            gsap.to(badge, {
+                y: "random(-20, 20)",
+                x: "random(-10, 10)",
+                rotation: "random(-15, 15)",
+                duration: "random(2, 4)",
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut",
+                delay: index * 0.2
+            });
+        });
     }
-});
 
 
-// --- About Section Animations ---
-document.addEventListener('DOMContentLoaded', () => {
-    const aboutCard = document.querySelector('#about-card');
+    // Section Headers ScrollTrigger
+    gsap.utils.toArray("section h2").forEach(header => {
+        gsap.from(header, {
+            scrollTrigger: {
+                trigger: header,
+                start: "top 80%",
+                toggleActions: "play none none reverse"
+            },
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            ease: "power3.out"
+        });
+    });
+
+    // Initialize AOS (Keep for simple fade-ups if desired, or replace fully with GSAP)
+    AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100,
+    });
+
+    // --- Project Modal Logic ---
+    const projectModal = document.getElementById('project-modal');
+    const closeProjectModalBtn = document.getElementById('close-project-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalTech = document.getElementById('modal-tech');
+    const modalDesc = document.getElementById('modal-desc');
+    const modalImg = document.getElementById('modal-img');
+
+    function openProjectModal(project) {
+        if (!projectModal) return;
+
+        modalTitle.textContent = project.title;
+        modalTech.textContent = project.tech;
+        modalDesc.textContent = project.description + " This project demonstrates high-level engineering and attention to detail. Built to be modular and scalable, it addresses specific user needs with a modern interface and robust backend logic.";
+        modalImg.src = `https://placehold.co/800x600/1F2937/4F46E5?text=${project.imgPlaceholder}`;
+
+        projectModal.classList.remove('hidden');
+        // Force reflow for animation
+        projectModal.offsetHeight;
+        projectModal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent scroll
+    }
+
+    function closeProjectModal() {
+        if (!projectModal) return;
+        projectModal.classList.remove('active');
+        setTimeout(() => {
+            projectModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }, 400);
+    }
+
+    if (closeProjectModalBtn) {
+        closeProjectModalBtn.addEventListener('click', closeProjectModal);
+    }
+
+    // Close on backdrop click
+    if (projectModal) {
+        projectModal.addEventListener('click', (e) => {
+            if (e.target === projectModal) closeProjectModal();
+        });
+    }
+
+    // Update project cards to be clickable
+    function updateProjectCardListeners() {
+        document.querySelectorAll('.project-card').forEach((card, index) => {
+            // Only the main card click opens the modal, not the AI button
+            card.addEventListener('click', (e) => {
+                if (!e.target.closest('.generate-desc-btn')) {
+                    openProjectModal(allProjects[index]);
+                }
+            });
+        });
+    }
+
+    // --- Contact Form Logic ---
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const btnText = submitBtn.querySelector('span');
+
+            // Basic animation for feedback
+            const originalText = btnText.textContent;
+            btnText.textContent = "Sending...";
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                btnText.textContent = "Message Sent! ✓";
+                submitBtn.classList.remove('bg-blue-600');
+                submitBtn.classList.add('bg-green-600');
+                contactForm.reset();
+
+                setTimeout(() => {
+                    btnText.textContent = originalText;
+                    submitBtn.classList.remove('bg-green-600');
+                    submitBtn.classList.add('bg-blue-600');
+                    submitBtn.disabled = false;
+                }, 3000);
+            }, 1500);
+        });
+    }
+
+    // --- Counter Animation ---
+    function animateCounters() {
+        const counters = document.querySelectorAll('.counter');
+        const speed = 200;
+
+        counters.forEach(counter => {
+            const updateCount = () => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText;
+                const inc = target / speed;
+
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + inc);
+                    setTimeout(updateCount, 1);
+                } else {
+                    counter.innerText = target + "+";
+                }
+            };
+
+            // Trigger when in view
+            const observer = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    updateCount();
+                    observer.unobserve(counter);
+                }
+            }, { threshold: 1 });
+
+            observer.observe(counter);
+        });
+    }
+
+
+
     if (aboutCard) {
         const aboutTl = gsap.timeline({
             scrollTrigger: {
@@ -1041,7 +1030,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Add mouse move glow effect
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
