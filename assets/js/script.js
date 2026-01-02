@@ -4,10 +4,10 @@ const mobileMenu = document.getElementById('mobile-menu');
 
 // --- Initialize Lenis (Smooth Scrolling) ---
 const lenis = new Lenis({
-    lerp: 0.1, // Using lerp for better laptop stability
+    lerp: 0.08, // Slightly heavier for more controlled movement
     smoothWheel: true,
     wheelMultiplier: 1,
-    touchMultiplier: 2,
+    touchMultiplier: 1.2, // Reduced from 2 for professional mobile stability
     infinite: false,
 });
 
