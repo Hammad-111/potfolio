@@ -30,9 +30,6 @@ lenis.on('scroll', (e) => {
         const scrolled = (e.progress * 100);
         scrollBar.style.width = scrolled + "%";
     }
-
-    // Refresh AOS on major scroll points if needed (optional but helpful)
-    // AOS.refresh(); 
 });
 
 gsap.ticker.add((time) => {
@@ -58,7 +55,7 @@ if (document.getElementById('typed-output')) {
 }
 
 // Initialize VanillaTilt
-VanillaTilt.init(document.querySelectorAll(".hero-card, .project-card, .certificate-card, .experience-card"), {
+VanillaTilt.init(document.querySelectorAll(".hero-card, .project-card, .certificate-card, .experience-card, .contact-card-3d"), {
     max: 10,
     speed: 400,
     glare: true,
@@ -110,27 +107,142 @@ const iconMappings = {
 };
 
 const allSkills = [
-    { name: 'React/Native', svg: iconMappings['react'], category: 'frontend' },
-    { name: 'Next.js', svg: iconMappings['nextjs'], category: 'frontend' },
-    { name: 'Vue.js', svg: iconMappings['vuejs'], category: 'frontend' },
-    { name: 'Node.js', svg: iconMappings['nodejs'], category: 'backend' },
-    { name: 'Django', svg: iconMappings['python'], category: 'backend' },
-    { name: '.NET', svg: iconMappings['dot-net'], category: 'backend' },
-    { name: 'MySQL', svg: iconMappings['database'], category: 'backend' },
-    { name: 'MongoDB', svg: iconMappings['mongodb'], category: 'backend' },
-    { name: 'Firebase', svg: iconMappings['firebase'], category: 'backend' },
-    { name: 'RESTful APIs', svg: iconMappings['server'], category: 'core' },
-    { name: 'Payment APIs', svg: iconMappings['credit-card'], category: 'core' },
-    { name: 'Figma', svg: iconMappings['figma'], category: 'frontend' },
-    { name: 'Git/GitHub', svg: iconMappings['git-branch'], category: 'core' },
-    { name: 'OOP', svg: iconMappings['oop'], category: 'core' },
-    { name: 'DSA', svg: iconMappings['binary'], category: 'core' },
-    { name: 'MVC', svg: iconMappings['layers-3'], category: 'core' },
-    { name: 'Deployment', svg: iconMappings['rocket'], category: 'core' }
+    { name: 'React/Native', iconClass: 'devicon-react-original colored', category: 'frontend' },
+    { name: 'Next.js', iconClass: 'devicon-nextjs-original-wordmark white', category: 'frontend' }, // Next.js is usually black/white. 'white' or invert needed if dark bg.
+    { name: 'Vue.js', iconClass: 'devicon-vuejs-plain colored', category: 'frontend' },
+    { name: 'Node.js', iconClass: 'devicon-nodejs-plain-wordmark colored', category: 'backend' },
+    { name: 'Django', iconClass: 'devicon-django-plain colored', category: 'backend' },
+    { name: '.NET', iconClass: 'devicon-dotnetcore-plain colored', category: 'backend' }, // using dotnetcore
+    { name: 'MySQL', iconClass: 'devicon-mysql-plain-wordmark colored', category: 'backend' },
+    { name: 'MongoDB', iconClass: 'devicon-mongodb-plain-wordmark colored', category: 'backend' },
+    { name: 'Firebase', iconClass: 'devicon-firebase-plain colored', category: 'backend' },
+    { name: 'RESTful APIs', iconClass: 'devicon-nodejs-plain colored', category: 'core' }, // Proxy icon
+    { name: 'Payment APIs', iconClass: 'devicon-amazonwebservices-plain-wordmark colored', category: 'core' }, // Proxy icon
+    { name: 'Figma', iconClass: 'devicon-figma-plain colored', category: 'frontend' },
+    { name: 'Git/GitHub', iconClass: 'devicon-git-plain colored', category: 'core' },
+    { name: 'OOP', iconClass: 'devicon-cplusplus-plain colored', category: 'core' }, // C++ is classic OOP rep
+    { name: 'DSA', iconClass: 'devicon-java-plain colored', category: 'core' }, // Java often used for DSA
+    { name: 'MVC', iconClass: 'devicon-rails-plain-wordmark colored', category: 'core' }, // Rails made MVC famous
+    { name: 'Deployment', iconClass: 'devicon-docker-plain colored', category: 'core' }
 ];
+
+// Note: Removed outdated iconMappings.
 
 // --- All Projects Data ---
 // --- All Projects Data ---
+const contactForm = document.getElementById('contact-form');
+const projectModal = document.getElementById('project-modal');
+const closeProjectModalBtn = document.getElementById('close-project-modal');
+const modalTitle = document.getElementById('modal-title');
+const modalTech = document.getElementById('modal-tech');
+const modalDesc = document.getElementById('modal-desc');
+const modalImg = document.getElementById('modal-img');
+
+function openProjectModal(project) {
+    if (!projectModal) return;
+
+    modalTitle.textContent = project.title;
+    modalTech.textContent = project.tech;
+    modalDesc.textContent = project.description + " This project demonstrates high-level engineering and attention to detail. Built to be modular and scalable, it addresses specific user needs with a modern interface and robust backend logic.";
+    modalImg.src = `https://placehold.co/800x600/1F2937/4F46E5?text=${project.imgPlaceholder}`;
+
+    projectModal.classList.remove('hidden');
+    // Force reflow for animation
+    projectModal.offsetHeight;
+    projectModal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevent scroll
+}
+
+function closeProjectModal() {
+    if (!projectModal) return;
+    projectModal.classList.remove('active');
+    setTimeout(() => {
+        projectModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }, 400);
+}
+
+// Update project cards to be clickable
+function updateProjectCardListeners() {
+    document.querySelectorAll('.project-card').forEach((card, index) => {
+        // Only the main card click opens the modal, not the AI button
+        card.addEventListener('click', (e) => {
+            if (!e.target.closest('.generate-desc-btn')) {
+                openProjectModal(allProjects[index]);
+            }
+        });
+    });
+}
+
+// --- Counter Animation ---
+function animateCounters() {
+    const counters = document.querySelectorAll('.counter');
+    const duration = 2000; // 2 seconds animation for all
+
+    counters.forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        if (counter.innerText.includes('+')) return;
+
+        const updateCount = () => {
+            const count = +counter.innerText.replace('+', '');
+            let timePerStep = duration / target;
+            if (timePerStep < 10) timePerStep = 10;
+            let inc = 1;
+            if (target > 200) inc = Math.ceil(target / (duration / 10));
+
+            if (count < target) {
+                counter.innerText = Math.min(count + inc, target);
+                setTimeout(updateCount, timePerStep);
+            } else {
+                counter.innerText = target + "+";
+            }
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                if (!counter.innerText.includes('+') && counter.innerText != '0') counter.innerText = '0';
+                updateCount();
+                observer.unobserve(counter);
+            }
+        }, { threshold: 0.5 });
+        observer.observe(counter);
+    });
+}
+
+// Set up listeners once defined
+document.addEventListener('DOMContentLoaded', () => {
+    if (closeProjectModalBtn) closeProjectModalBtn.addEventListener('click', closeProjectModal);
+    if (projectModal) {
+        projectModal.addEventListener('click', (e) => {
+            if (e.target === projectModal) closeProjectModal();
+        });
+    }
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const btnText = submitBtn.querySelector('span');
+            const originalText = btnText.textContent;
+            btnText.textContent = "Sending...";
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                btnText.textContent = "Message Sent! ✓";
+                submitBtn.classList.remove('bg-blue-600');
+                submitBtn.classList.add('bg-green-600');
+                contactForm.reset();
+
+                setTimeout(() => {
+                    btnText.textContent = originalText;
+                    submitBtn.classList.remove('bg-green-600');
+                    submitBtn.classList.add('bg-blue-600');
+                    submitBtn.disabled = false;
+                }, 3000);
+            }, 1500);
+        });
+    }
+});
+
 const allProjects = [
     {
         title: "SAVIOT - Energy AI",
@@ -310,7 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const skillCardHTML = `
                 <div class="skill-item" data-category="${skill.category}">
                     <div class="glow-base"></div>
-                    ${skill.svg}
+                    <i class="${skill.iconClass} text-5xl mb-3"></i>
                     <span>${skill.name}</span>
                 </div>
             `;
@@ -553,9 +665,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const pulseContainer = document.querySelector('.pulse-container');
         const logo = document.querySelector('.preloader-logo');
 
-        // Sound effect function (Web Audio API)
+        // Shared AudioContext setup (Singleton)
+        let sharedAudioContext = null;
+
+        const getAudioContext = () => {
+            return sharedAudioContext;
+        };
+
+        // Proper AudioContext resume/init on gesture
+        const resumeAudioContext = () => {
+            if (!sharedAudioContext) {
+                sharedAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (sharedAudioContext.state === 'suspended') {
+                sharedAudioContext.resume();
+            }
+            // cleanup
+            ['click', 'mousedown', 'keydown', 'touchstart'].forEach(e => document.removeEventListener(e, resumeAudioContext));
+        };
+
+        ['click', 'mousedown', 'keydown', 'touchstart'].forEach(e => document.addEventListener(e, resumeAudioContext));
+
         const playBeep = () => {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const audioContext = getAudioContext();
+            if (!audioContext || audioContext.state === 'suspended') return;
+
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
 
@@ -803,120 +937,7 @@ document.addEventListener('DOMContentLoaded', () => {
         offset: 100,
     });
 
-    // --- Project Modal Logic ---
-    const projectModal = document.getElementById('project-modal');
-    const closeProjectModalBtn = document.getElementById('close-project-modal');
-    const modalTitle = document.getElementById('modal-title');
-    const modalTech = document.getElementById('modal-tech');
-    const modalDesc = document.getElementById('modal-desc');
-    const modalImg = document.getElementById('modal-img');
 
-    function openProjectModal(project) {
-        if (!projectModal) return;
-
-        modalTitle.textContent = project.title;
-        modalTech.textContent = project.tech;
-        modalDesc.textContent = project.description + " This project demonstrates high-level engineering and attention to detail. Built to be modular and scalable, it addresses specific user needs with a modern interface and robust backend logic.";
-        modalImg.src = `https://placehold.co/800x600/1F2937/4F46E5?text=${project.imgPlaceholder}`;
-
-        projectModal.classList.remove('hidden');
-        // Force reflow for animation
-        projectModal.offsetHeight;
-        projectModal.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent scroll
-    }
-
-    function closeProjectModal() {
-        if (!projectModal) return;
-        projectModal.classList.remove('active');
-        setTimeout(() => {
-            projectModal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }, 400);
-    }
-
-    if (closeProjectModalBtn) {
-        closeProjectModalBtn.addEventListener('click', closeProjectModal);
-    }
-
-    // Close on backdrop click
-    if (projectModal) {
-        projectModal.addEventListener('click', (e) => {
-            if (e.target === projectModal) closeProjectModal();
-        });
-    }
-
-    // Update project cards to be clickable
-    function updateProjectCardListeners() {
-        document.querySelectorAll('.project-card').forEach((card, index) => {
-            // Only the main card click opens the modal, not the AI button
-            card.addEventListener('click', (e) => {
-                if (!e.target.closest('.generate-desc-btn')) {
-                    openProjectModal(allProjects[index]);
-                }
-            });
-        });
-    }
-
-    // --- Contact Form Logic ---
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const submitBtn = contactForm.querySelector('button[type="submit"]');
-            const btnText = submitBtn.querySelector('span');
-
-            // Basic animation for feedback
-            const originalText = btnText.textContent;
-            btnText.textContent = "Sending...";
-            submitBtn.disabled = true;
-
-            setTimeout(() => {
-                btnText.textContent = "Message Sent! ✓";
-                submitBtn.classList.remove('bg-blue-600');
-                submitBtn.classList.add('bg-green-600');
-                contactForm.reset();
-
-                setTimeout(() => {
-                    btnText.textContent = originalText;
-                    submitBtn.classList.remove('bg-green-600');
-                    submitBtn.classList.add('bg-blue-600');
-                    submitBtn.disabled = false;
-                }, 3000);
-            }, 1500);
-        });
-    }
-
-    // --- Counter Animation ---
-    function animateCounters() {
-        const counters = document.querySelectorAll('.counter');
-        const speed = 200;
-
-        counters.forEach(counter => {
-            const updateCount = () => {
-                const target = +counter.getAttribute('data-target');
-                const count = +counter.innerText;
-                const inc = target / speed;
-
-                if (count < target) {
-                    counter.innerText = Math.ceil(count + inc);
-                    setTimeout(updateCount, 1);
-                } else {
-                    counter.innerText = target + "+";
-                }
-            };
-
-            // Trigger when in view
-            const observer = new IntersectionObserver((entries) => {
-                if (entries[0].isIntersecting) {
-                    updateCount();
-                    observer.unobserve(counter);
-                }
-            }, { threshold: 1 });
-
-            observer.observe(counter);
-        });
-    }
 
 
 
@@ -978,6 +999,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Call updates on load
 
 document.addEventListener('DOMContentLoaded', () => {
+    // These functions are now defined globally or shared correctly
     updateProjectCardListeners();
     animateCounters();
     lucide.createIcons();
@@ -1040,3 +1062,128 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+
+// --- Certificate Section Animations ---
+document.addEventListener('DOMContentLoaded', () => {
+    const certCards = document.querySelectorAll('.certificate-card-modern');
+
+    if (certCards.length > 0) {
+        // Initialize Lucide icons for certificate cards
+        lucide.createIcons();
+
+        // GSAP Scroll-Triggered Animation for each card individually
+        certCards.forEach((card, index) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 90%', // Triggers when top of card hits 90% of viewport height
+                    toggleActions: 'play none none reverse'
+                },
+                y: 50,
+                opacity: 0,
+                scale: 0.95,
+                duration: 0.6,
+                delay: index * 0.1, // Small delay for effect but reliable
+                ease: 'power3.out'
+            });
+        });
+
+        // Advanced 3D Tilt & Glow Tracking
+        certCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                // Calculate percentage position (0 to 1)
+                const xPct = x / rect.width;
+                const yPct = y / rect.height;
+
+                // Calculate rotation (max +/- 10deg)
+                const rotateX = (0.5 - yPct) * 20;
+                const rotateY = (xPct - 0.5) * 20;
+
+                card.style.setProperty('--x', `${x}px`);
+                card.style.setProperty('--y', `${y}px`);
+                card.style.setProperty('--rotateX', `${rotateX}deg`);
+                card.style.setProperty('--rotateY', `${rotateY}deg`);
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.setProperty('--x', '50%');
+                card.style.setProperty('--y', '50%');
+                card.style.setProperty('--rotateX', '0deg');
+                card.style.setProperty('--rotateY', '0deg');
+            });
+        });
+    }
+});
+
+// --- Testimonials Spotlight Effect ---
+document.addEventListener('DOMContentLoaded', () => {
+    const grid = document.getElementById('testimonials-grid');
+    if (!grid) return;
+
+    grid.addEventListener('mousemove', (e) => {
+        const rect = grid.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        // Update generic css vars for cards usage if needed, but primarily for grid background
+        grid.style.setProperty('--mouse-x', `${x}px`);
+        grid.style.setProperty('--mouse-y', `${y}px`);
+
+        // Spotlight overlay logic
+        const spotlight = document.getElementById('grid-spotlight');
+        if (spotlight) {
+            spotlight.style.background = `radial-gradient(600px circle at ${x}px ${y}px, rgba(59, 130, 246, 0.15), transparent 40%)`;
+        }
+    });
+
+    // Individual Card Border Glow (Vercel Style) via ::before
+    const cards = document.querySelectorAll('.testimonial-card-modern');
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            card.style.setProperty('--card-mouse-x', `${x}px`);
+            card.style.setProperty('--card-mouse-y', `${y}px`);
+            card.style.setProperty('--mouse-x', `${x}px`); // Fallback
+            card.style.setProperty('--mouse-y', `${y}px`); // Fallback
+        });
+    });
+});
+
+// --- Modern Contact Cards Tilt Effect ---
+document.addEventListener('DOMContentLoaded', () => {
+    const contactCards = document.querySelectorAll('.contact-card-3d');
+
+    contactCards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // Calculate rotation
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = ((y - centerY) / centerY) * -10; // Max 10deg
+            const rotateY = ((x - centerX) / centerX) * 10;
+
+            const content = card.querySelector('.card-content');
+            if (content) {
+                content.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            }
+        });
+
+        card.addEventListener('mouseleave', () => {
+            const content = card.querySelector('.card-content');
+            if (content) {
+                content.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            }
+        });
+    });
+});
