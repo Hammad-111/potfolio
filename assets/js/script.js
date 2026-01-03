@@ -408,6 +408,10 @@ document.addEventListener('DOMContentLoaded', () => {
         filteredSkills.forEach((skill, index) => {
             const skillCardHTML = `
                 <div class="skill-item" data-category="${skill.category}">
+                    <div class="card-corner top-left"></div>
+                    <div class="card-corner top-right"></div>
+                    <div class="card-corner bottom-left"></div>
+                    <div class="card-corner bottom-right"></div>
                     <div class="glow-base"></div>
                     <i class="${skill.iconClass} text-5xl mb-3"></i>
                     <span>${skill.name}</span>
