@@ -4,10 +4,11 @@ const mobileMenu = document.getElementById('mobile-menu');
 
 // --- Initialize Lenis (Smooth Scrolling) ---
 const lenis = new Lenis({
-    lerp: 0.08, // Slightly heavier for more controlled movement
+    lerp: 0.05, // Ultra-smooth heavy feel
     smoothWheel: true,
     wheelMultiplier: 1,
-    touchMultiplier: 1.2, // Reduced from 2 for professional mobile stability
+    touchMultiplier: 0.8, // Maximum control for mobile
+    smoothTouch: true,
     infinite: false,
 });
 
