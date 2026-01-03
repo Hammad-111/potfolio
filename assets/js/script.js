@@ -44,47 +44,57 @@ gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.normalizeScroll(true);
 ScrollTrigger.config({ limitCallbacks: true });
 
-// Initialize Typed.js
-if (document.getElementById('typed-output')) {
-    new Typed('#typed-output', {
-        strings: ['Hammad Javed', 'Full-Stack Developer', 'Mobile App Developer', 'MERN Stack Expert'],
-        typeSpeed: 50,
-        backSpeed: 30,
-        loop: true,
-        backDelay: 1500
+// --- Heavy Library Initialization (Deferred for Smooth Splash) ---
+const initHeavyLibraries = () => {
+    // Initialize Typed.js
+    if (document.getElementById('typed-output')) {
+        new Typed('#typed-output', {
+            strings: ['Hammad Javed', 'Full-Stack Developer', 'Mobile App Developer', 'MERN Stack Expert'],
+            typeSpeed: 50,
+            backSpeed: 30,
+            loop: true,
+            backDelay: 1500
+        });
+    }
+
+    // Initialize VanillaTilt
+    VanillaTilt.init(document.querySelectorAll(".hero-card, .project-card, .certificate-card, .experience-card, .contact-card-3d"), {
+        max: 10,
+        speed: 400,
+        glare: true,
+        "max-glare": 0.2,
+        scale: 1.02
     });
-}
 
-// Initialize VanillaTilt
-VanillaTilt.init(document.querySelectorAll(".hero-card, .project-card, .certificate-card, .experience-card, .contact-card-3d"), {
-    max: 10,
-    speed: 400,
-    glare: true,
-    "max-glare": 0.2,
-    scale: 1.02
-});
+    // Initialize Particles.js
+    if (window.particlesJS && document.getElementById('particles-js')) {
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#3b82f6" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.3, "random": false },
+                "size": { "value": 3, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#3b82f6", "opacity": 0.2, "width": 1 },
+                "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
+                "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 1 } }, "push": { "particles_nb": 4 } }
+            },
+            "retina_detect": true
+        });
+    }
 
-// Initialize Particles.js
-particlesJS("particles-js", {
-    "particles": {
-        "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-        "color": { "value": "#3b82f6" },
-        "shape": { "type": "circle" },
-        "opacity": { "value": 0.3, "random": false },
-        "size": { "value": 3, "random": true },
-        "line_linked": { "enable": true, "distance": 150, "color": "#3b82f6", "opacity": 0.2, "width": 1 },
-        "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
-    },
-    "interactivity": {
-        "detect_on": "canvas",
-        "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
-        "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 1 } }, "push": { "particles_nb": 4 } }
-    },
-    "retina_detect": true
-});
+    // Initialize Lucide Icons
+    if (window.lucide) {
+        lucide.createIcons();
+    }
+};
 
-// Initialize Lucide Icons
-lucide.createIcons();
+// Start background initializations after splash is already running
+setTimeout(initHeavyLibraries, 200);
 
 // --- All Skills Data ---
 const iconMappings = {
@@ -384,30 +394,6 @@ const observer = new IntersectionObserver((entries) => {
 sections.forEach(section => { observer.observe(section); });
 
 
-// --- Preloader Logic ---
-window.onload = () => {
-    const preloader = document.getElementById('preloader');
-    const progressBar = document.getElementById('progress-bar');
-    const progressPercent = document.getElementById('progress-percent');
-    const mainContent = document.querySelector('main');
-
-    let progress = 0;
-    const interval = setInterval(() => {
-        progress += Math.floor(Math.random() * 10) + 1;
-        if (progress > 100) progress = 100;
-
-        if (progressBar) progressBar.style.width = progress + '%';
-        if (progressPercent) progressPercent.textContent = progress + '%';
-
-        if (progress === 100) {
-            clearInterval(interval);
-            setTimeout(() => {
-                preloader.classList.add('hidden');
-                mainContent.classList.add('loaded');
-            }, 500); // Wait a bit after 100%
-        }
-    }, 100); // Update interval
-};
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -662,9 +648,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const preloader = document.getElementById('preloader');
         const progressCircle = document.querySelector('.progress-ring-circle');
         const scrambleText = document.querySelector('.scramble-text');
-        const nameSubtitle = document.querySelector('.name-subtitle');
+        const typewriterName = document.getElementById('typewriter-name');
         const pulseContainer = document.querySelector('.pulse-container');
-        const logo = document.querySelector('.preloader-logo');
+        const systemLogs = document.getElementById('system-logs');
+        const binaryRain = document.getElementById('binary-rain');
+        const cube = document.querySelector('.cube');
+        const grid = document.querySelector('.preloader-grid');
+        const crosshair = document.getElementById('hud-crosshair');
+        const scanningBeam = document.querySelector('.scanning-beam');
+        const identityNode = document.querySelector('.identity-node-container');
+        const identityHub = document.querySelector('.identity-system-hub');
 
         // Shared AudioContext setup (Singleton)
         let sharedAudioContext = null;
@@ -731,110 +724,173 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        // Initial particle burst
-        setTimeout(() => createParticleBurst(), 300);
+        // Mouse Tracking for HUD Crosshair
+        if (preloader) {
+            preloader.addEventListener('mousemove', (e) => {
+                if (crosshair) {
+                    gsap.to(crosshair, {
+                        x: e.clientX - 50,
+                        y: e.clientY - 50,
+                        duration: 0.1,
+                        ease: "power2.out"
+                    });
+                }
+            });
+        }
 
-        // Binary Rain Effect
-        const binaryRain = document.getElementById('binary-rain');
+        // --- Ultra Advanced Cyber HUD Logic ---
+
+        // 1. Binary Rain
         const createBinaryColumn = () => {
             if (!binaryRain) return;
             const column = document.createElement('div');
             column.className = 'binary-column';
             column.style.left = Math.random() * 100 + '%';
             column.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            column.style.opacity = Math.random() * 0.3;
 
             let binaryText = '';
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 15; i++) {
                 binaryText += Math.random() > 0.5 ? '1' : '0';
                 binaryText += '<br>';
             }
             column.innerHTML = binaryText;
-
             binaryRain.appendChild(column);
             setTimeout(() => column.remove(), 5000);
         };
+        const rainInterval = setInterval(() => {
+            if (preloader && !preloader.classList.contains('hidden')) createBinaryColumn();
+        }, 150);
 
-        // Create binary columns periodically
-        const binaryInterval = setInterval(() => {
-            if (Math.random() > 0.7) createBinaryColumn();
-        }, 200);
+        // 2. System Logs
+        const logMessages = [
+            "INIT_GRID_PROTOCOLS...",
+            "CALIBRATING_DATA_RINGS...",
+            "SYNCING_NEURAL_CORE...",
+            "UPLOADING_CREDENTIALS...",
+            "ESTABLISHING_LINK...",
+            "BYPASSING_FIREWALL...",
+            "DECRYPTING_IDENTITY...",
+            "SYSTEM_OPTIMIZATION_SUCCESS",
+            "WELCOME_HAMMAD_JAVED"
+        ];
+        const pushLog = (msg) => {
+            if (!systemLogs) return;
+            const logLine = document.createElement('div');
+            logLine.className = 'log-line';
+            logLine.innerText = `> ${msg}`;
+            systemLogs.prepend(logLine);
+            if (systemLogs.children.length > 8) systemLogs.removeChild(systemLogs.lastChild);
+        };
+        const logInterval = setInterval(() => {
+            if (Math.random() > 0.4) pushLog(logMessages[Math.floor(Math.random() * logMessages.length)]);
+        }, 400);
 
-        setTimeout(() => clearInterval(binaryInterval), 2500);
+        // 3. Main Loader & Typewriter Reveal
+        let progress = 0;
+        const targetName = "HAMMAD JAVED";
+        let typingIndex = 0;
+        let isTyping = false;
+        let typingFinished = false;
+        let progressFinished = false;
 
-        // Scramble text effect with sound
-        const finalText = 'SYSTEM READY';
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*';
-        let scrambleInterval;
-        let iterations = 0;
+        const triggerFinalExit = () => {
+            if (!typingFinished || !progressFinished) return;
 
-        if (scrambleText) {
-            scrambleInterval = setInterval(() => {
-                if (Math.random() > 0.7) playBeep(); // Random beeps
+            if (scrambleText) scrambleText.innerText = "ACCESS_GRANTED";
 
-                scrambleText.innerText = finalText
-                    .split('')
-                    .map((char, index) => {
-                        if (index < iterations) {
-                            return finalText[index];
-                        }
-                        return chars[Math.floor(Math.random() * chars.length)];
-                    })
-                    .join('');
-
-                if (iterations >= finalText.length) {
-                    clearInterval(scrambleInterval);
-                    // Fade in name after scramble completes
-                    gsap.to(nameSubtitle, {
-                        opacity: 1,
-                        duration: 0.8,
-                        delay: 0.3,
-                        ease: 'power2.out'
-                    });
+            // Integrated Seamless Transition Timeline
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    clearInterval(rainInterval); // Only cleanup once fully hidden
+                    preloader.classList.add('hidden');
+                    if (document.querySelector('main')) document.querySelector('main').classList.add('loaded');
                 }
-                iterations += 1 / 3;
-            }, 30);
-        }
-
-        // Animate progress ring
-        if (progressCircle) {
-            gsap.to(progressCircle, {
-                strokeDashoffset: 0,
-                duration: 2,
-                ease: 'power2.inOut'
             });
-        }
 
-        // Exit animation after load
-        setTimeout(() => {
-            // Shockwave exit
-            if (pulseContainer) {
-                gsap.to(pulseContainer, {
-                    scale: 3,
+            // Phase 1: Hold State (Animations Keep Running)
+            tl.to({}, { duration: 0.3 }) // Professional pause (hold)
+
+                // Phase 2: Hub & Scanner Fade out
+                .to(identityHub, { opacity: 0, scale: 0.8, filter: "blur(10px)", duration: 0.5, ease: "power2.in" })
+                .to(scanningBeam, { opacity: 0, duration: 0.2 }, "-=0.4")
+
+                // Phase 3: Final Background Reveal & Home Animation Sync
+                .to(preloader, { filter: "blur(15px) contrast(150%)", duration: 0.6, ease: "power2.inOut" }, "-=0.2")
+                .to(pulseContainer, { scale: 4, opacity: 0, duration: 0.7, ease: "power3.in" }, "-=0.4")
+                .to(grid, { scale: 1.3, opacity: 0, duration: 0.8, ease: "power2.inOut" }, "-=0.6")
+                .to(preloader, {
                     opacity: 0,
                     duration: 0.8,
-                    ease: 'power4.in'
-                });
+                    ease: "power3.inOut"
+                }, "-=0.8");
+
+            // Trigger home animations to overlap with the preloader fade
+            tl.add(() => {
+                heroTl.play();
+            }, "-=0.6");
+        };
+
+        const mainLoader = setInterval(() => {
+            progress += Math.random() * 2.5;
+
+            // Progress Ring
+            if (progressCircle) {
+                const offset = 282.7 - (progress / 100) * 282.7;
+                gsap.to(progressCircle, { strokeDashoffset: offset, duration: 0.2 });
             }
 
-            if (scrambleText || nameSubtitle) {
-                gsap.to([scrambleText, nameSubtitle], {
-                    opacity: 0,
-                    y: 20,
-                    duration: 0.5,
-                    ease: 'power2.in'
-                });
+            // Sync Cube Speed
+            if (cube) {
+                const speed = 12 - (progress / 100) * 10;
+                cube.style.animationDuration = `${Math.max(speed, 2)}s`;
             }
 
-            setTimeout(() => {
-                if (preloader) preloader.classList.add('hidden');
-                if (document.querySelector('main')) document.querySelector('main').classList.add('loaded');
+            // Scramble handling
+            if (scrambleText && progress > 20 && progress < 85) {
+                const chars = '01#@$%&*';
+                scrambleText.innerText = "LINKING_" + Array(8).fill(0).map(() => chars[Math.floor(Math.random() * chars.length)]).join('');
+            }
 
-                // Trigger Hero Animations
-                setTimeout(() => {
-                    heroTl.play();
-                }, 300);
-            }, 800);
-        }, 2500);
+            // Start Typewriter Name Reveal at 30% for more buffer
+            if (progress > 30 && !isTyping) {
+                isTyping = true;
+
+                // Identity Node Reveal
+                if (identityNode) {
+                    gsap.to(identityNode, {
+                        opacity: 1,
+                        scale: 1,
+                        y: 0,
+                        duration: 1,
+                        ease: "back.out(1.7)"
+                    });
+                }
+
+                const typeInterval = setInterval(() => {
+                    if (typingIndex < targetName.length) {
+                        typewriterName.textContent += targetName[typingIndex];
+                        typingIndex++;
+                        // Glitch effect on character add
+                        if (Math.random() > 0.8) {
+                            gsap.to(typewriterName, { skewX: 20, duration: 0.05, yoyo: true, repeat: 1 });
+                        }
+                    } else {
+                        clearInterval(typeInterval);
+                        typingFinished = true;
+                        triggerFinalExit();
+                    }
+                }, 150);
+            }
+
+            if (progress >= 100) {
+                clearInterval(mainLoader);
+                progressFinished = true;
+                triggerFinalExit();
+            }
+        }, 60);
+
+        // Initial particle burst
     });
 
     // Hero Section Timeline (Paused initially)
@@ -847,6 +903,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .from(".hero-card h1", { y: 30, opacity: 0, duration: 1, ease: "power4.out" }, "-=0.8")
         .from(".hero-card p", { y: 20, opacity: 0, stagger: 0.1, duration: 1, ease: "power4.out" }, "-=0.8")
         .from(".hero-card a", { y: 20, opacity: 0, stagger: 0.1, duration: 1, ease: "power4.out" }, "-=0.8");
+
 
     // Magnetic Cursor Effect on Profile Image & Hero Card (Desktop only)
     if (window.innerWidth > 768) {
