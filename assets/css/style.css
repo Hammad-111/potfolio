@@ -718,25 +718,76 @@
 
         .nav-link {
             position: relative;
-            padding-bottom: 4px;
+            padding: 8px 18px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
+        /* The Glass Capsule Background */
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(59, 130, 246, 0.08);
+            border-radius: 12px;
+            transform: scale(0.6);
+            opacity: 0;
+            filter: blur(5px);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            z-index: -1;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        /* The Dynamic Underline Beam */
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+            bottom: 6px;
+            left: 50%;
+            width: 0;
             height: 2px;
-            background-color: #3B82F6;
-            transform: scaleX(0);
-            transform-origin: bottom right;
-            transition: transform 0.3s ease-out;
+            background: linear-gradient(90deg, transparent, #3B82F6, transparent);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover {
+            color: #60a5fa !important;
+            transform: translateY(-2px);
+            letter-spacing: 0.8px;
+            text-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .nav-link:hover::before {
+            transform: scale(1);
+            opacity: 1;
+            filter: blur(0);
+            background: rgba(59, 130, 246, 0.12);
         }
 
         .nav-link:hover::after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
+            width: 60%;
+        }
+
+        /* Active State */
+        .nav-link.active::before {
+            transform: scale(1);
+            opacity: 1;
+            filter: blur(0);
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .nav-link.active::after {
+            width: 70%;
+            background: #3B82F6;
         }
 
         /* Neon Shadow Hover Effects on items */
