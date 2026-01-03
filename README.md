@@ -1,4 +1,4 @@
-# Hammad Javed Portfolio v7.0
+# Hammad Javed Portfolio
 
 A high-performance digital experience featuring immersive animations, glassmorphism design, and cyber-holographic aesthetics. This repository contains the full source code for my professional portfolio, optimized for current web standards and speed.
 
