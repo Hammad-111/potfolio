@@ -1181,42 +1181,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// --- Testimonials Spotlight Effect ---
-document.addEventListener('DOMContentLoaded', () => {
-    const grid = document.getElementById('testimonials-grid');
-    if (!grid) return;
 
-    grid.addEventListener('mousemove', (e) => {
-        const rect = grid.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        // Update generic css vars for cards usage if needed, but primarily for grid background
-        grid.style.setProperty('--mouse-x', `${x}px`);
-        grid.style.setProperty('--mouse-y', `${y}px`);
-
-        // Spotlight overlay logic
-        const spotlight = document.getElementById('grid-spotlight');
-        if (spotlight) {
-            spotlight.style.background = `radial-gradient(600px circle at ${x}px ${y}px, rgba(59, 130, 246, 0.15), transparent 40%)`;
-        }
-    });
-
-    // Individual Card Border Glow (Vercel Style) via ::before
-    const cards = document.querySelectorAll('.testimonial-card-modern');
-    cards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            card.style.setProperty('--card-mouse-x', `${x}px`);
-            card.style.setProperty('--card-mouse-y', `${y}px`);
-            card.style.setProperty('--mouse-x', `${x}px`); // Fallback
-            card.style.setProperty('--mouse-y', `${y}px`); // Fallback
-        });
-    });
-});
 
 // --- Modern Contact Cards Tilt Effect ---
 document.addEventListener('DOMContentLoaded', () => {
