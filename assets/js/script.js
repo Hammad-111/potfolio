@@ -256,6 +256,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const allProjects = [
     {
+        title: "ProHotel System",
+        category: "web",
+        description: "Where Logic Meets Premium Design. A complete hotel reservation engine featuring custom-coded Radar/Cube animations, smart room pricing polymorphism, and a simulated SMS API notification system—all built with zero external dependencies.",
+        tech: "Vanilla JS, CSS Animations, Polymorphism",
+        image: "assets/img/HostelManagementsystem.png"
+    },
+    {
         title: "SAVIOT - Energy AI",
         category: "ai",
         description: "AI-powered MERN web app for real-time electricity monitoring and industrial energy optimization.",
