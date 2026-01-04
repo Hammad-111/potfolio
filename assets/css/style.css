@@ -2827,56 +2827,73 @@
             width: 100%;
         }
 
-        /* HamSync Featured Section Styles */
-        .hamsync-card {
-            background: rgba(17, 24, 39, 0.6);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Modern HamSync Card Styles */
+        .hamsync-card-modern {
+            background: rgba(10, 15, 30, 0.7);
+            backdrop-filter: blur(40px);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05),
+                0 20px 50px -10px rgba(0, 0, 0, 0.7);
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            z-index: 1;
         }
 
-        .hamsync-card:hover {
-            transform: translateY(-5px);
-            background: rgba(17, 24, 39, 0.8);
-            border-color: rgba(59, 130, 246, 0.3);
-            box-shadow: 0 0 40px rgba(59, 130, 246, 0.15);
+        .hamsync-card-modern:hover {
+            transform: translateY(-5px) scale(1.005);
+            background: rgba(13, 20, 40, 0.85);
+            box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.4),
+                0 0 30px rgba(59, 130, 246, 0.15),
+                0 30px 60px -15px rgba(0, 0, 0, 0.8);
         }
 
-        @media (max-width: 768px) {
-            .hamsync-card {
-                padding: 2rem !important;
-                background: rgba(17, 24, 39, 0.8);
-            }
-
-            .hamsync-card h2 {
-                font-size: 1.75rem !important;
-            }
-
-            .hamsync-card h3 {
-                font-size: 1.5rem !important;
-            }
-        }
-
-        .hamsync-card .card-border-trace {
+        .hamsync-card-modern .modern-border-trace {
             position: absolute;
             inset: 0;
-            border-radius: 2.5rem;
-            padding: 2px;
-            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.8), transparent);
+            border-radius: inherit;
+            padding: 1.5px;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.6), transparent);
             mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
-            opacity: 0.5;
+            opacity: 0.6;
             pointer-events: none;
         }
 
-        .hamsync-card:hover .card-border-trace {
-            background: linear-gradient(90deg, transparent, #3B82F6, #9333EA, #3B82F6, transparent);
+        .hamsync-card-modern:hover .modern-border-trace {
+            background: linear-gradient(90deg, transparent, #60A5FA, #A855F7, #60A5FA, transparent);
             background-size: 200% 100%;
-            animation: borderTrace 3s linear infinite;
+            animation: modernBorderFlow 2.5s linear infinite;
             opacity: 1;
+            padding: 2px;
         }
+
+        @keyframes modernBorderFlow {
+            0% {
+                background-position: 150% 0;
+            }
+
+            100% {
+                background-position: -150% 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamsync-card-modern {
+                padding: 2rem !important;
+                background: rgba(10, 15, 30, 0.9);
+            }
+
+            .hamsync-card-modern h2 {
+                font-size: 1.75rem !important;
+            }
+
+            .hamsync-card-modern h3 {
+                font-size: 1.5rem !important;
+            }
+        }
+
+
 
         @keyframes borderTrace {
             0% {
