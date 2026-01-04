@@ -28,8 +28,25 @@ The entry point of the site is an optimized, multi-stage preloader:
 ### 3. Infinite Project Slider
 A horizontally scrolling section that showcases key works with hover-active glassmorphism cards. Each card uses VanillaTilt.js for real-time 3D interaction.
 
-### 4. Experience Timeline
+### 4. Featured Upcoming: HamSync
+A premium, "Cyber-Void" aesthetic section highlighting the upcoming "HamSync" project.
+- **Constrained Neon Glow**: Light strictly follows the border trace, preventing visual washout.
+- **Modern Glassmorphism**: Deep, rich background with a sophisticated "Coming Soon" pill badge.
+- **Mobile Optimized**: Fully responsive layout with adjusted logo sizing and spacing for small devices.
+
+### 5. Experience Timeline
 A high-contrast vertical timeline that uses pulsing nodes and staggered entrance animations. It is built to guide the reader through my career path chronologically with visual emphasis on milestones.
+
+### 6. Professional Certifications
+A dedicated section displaying industry credentials in modern glass-cards.
+- **Verified Badges**: Each certificate includes a "Verified" badge and visual branding.
+- **Hover Effects**: subtle lift and glow on interaction.
+
+### 7. 3D Contact Hub
+A completely redesigned "Get In Touch" section featuring:
+- **3D Tilt Cards**: Contact methods (Email, Phone, WhatsApp) are presented as interactive 3D elements.
+- **Floating Input Fields**: Modern form inputs with floating labels and focus animations.
+
 
 ---
 
