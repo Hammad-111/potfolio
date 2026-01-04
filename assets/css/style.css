@@ -2827,6 +2827,67 @@
             width: 100%;
         }
 
+        /* HamSync Featured Section Styles */
+        .hamsync-card {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hamsync-card:hover {
+            transform: translateY(-5px);
+            background: rgba(17, 24, 39, 0.8);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .hamsync-card {
+                padding: 2rem !important;
+                background: rgba(17, 24, 39, 0.8);
+            }
+
+            .hamsync-card h2 {
+                font-size: 1.75rem !important;
+            }
+
+            .hamsync-card h3 {
+                font-size: 1.5rem !important;
+            }
+        }
+
+        .hamsync-card .card-border-trace {
+            position: absolute;
+            inset: 0;
+            border-radius: 2.5rem;
+            padding: 2px;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.8), transparent);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .hamsync-card:hover .card-border-trace {
+            background: linear-gradient(90deg, transparent, #3B82F6, #9333EA, #3B82F6, transparent);
+            background-size: 200% 100%;
+            animation: borderTrace 3s linear infinite;
+            opacity: 1;
+        }
+
+        @keyframes borderTrace {
+            0% {
+                background-position: 100% 0;
+            }
+
+            100% {
+                background-position: -100% 0;
+            }
+        }
+
         .newsletter-input-glass {
             background: rgba(255, 255, 255, 0.03) !important;
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
