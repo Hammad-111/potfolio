@@ -204,8 +204,47 @@
                 <div class="card-corner bottom-left"></div>
                 <div class="card-corner bottom-right"></div>
 
-                <img src="assets/profile.jpg" alt="Profile Picture" id="hero-profile-img"
-                    class="w-36 h-36 md:w-48 md:h-48 rounded-full mx-auto mb-6 border-4 border-blue-500 shadow-xl object-cover transition-transform duration-300">
+                <div class="relative w-36 h-36 md:w-48 md:h-48 mx-auto mb-8 profile-orbit-container">
+                    <!-- Orbit Animation Ring -->
+                    <div
+                        class="orbit-animation-ring absolute inset-[-20px] md:inset-[-30px] rounded-full z-0 pointer-events-none">
+                        <div class="orbit-item item-1">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+                                alt="React" class="w-5 h-5 md:w-6 md:h-6">
+                        </div>
+                        <div class="orbit-item item-2">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+                                alt="Python" class="w-5 h-5 md:w-6 md:h-6">
+                        </div>
+                        <div class="orbit-item item-3">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+                                alt="Node" class="w-5 h-5 md:w-6 md:h-6">
+                        </div>
+                        <div class="orbit-item item-4">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"
+                                alt="Mongo" class="w-5 h-5 md:w-6 md:h-6">
+                        </div>
+                        <div class="orbit-item item-5">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+                                alt="JS" class="w-5 h-5 md:w-6 md:h-6">
+                        </div>
+                        <div class="orbit-item item-6">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg"
+                                alt="TS" class="w-5 h-5 md:w-6 md:h-6">
+                        </div>
+                        <div class="orbit-item item-7">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg"
+                                alt="Tailwind" class="w-5 h-5 md:w-6 md:h-6">
+                        </div>
+                        <div class="orbit-item item-8">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git"
+                                class="w-5 h-5 md:w-6 md:h-6">
+                        </div>
+                    </div>
+
+                    <img src="assets/profile.jpg" alt="Profile Picture" id="hero-profile-img"
+                        class="w-full h-full rounded-full border-4 border-blue-500 shadow-xl object-cover relative z-10 transition-transform duration-300">
+                </div>
                 <h1
                     class="text-3xl sm:text-4xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 mb-3 glow-text animate-gradient">
                     Hi, I'm Hammad Javed
