@@ -270,6 +270,203 @@
         }
 
 
+        /* Main Card Orbit Animation */
+        .orbit-animation-ring {
+            animation: orbitSpin 25s linear infinite;
+        }
+
+        .orbit-item {
+            position: absolute;
+            background: rgba(17, 24, 39, 0.9);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 50%;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.25);
+            backdrop-filter: blur(6px);
+            /* Default center positioning before transform */
+            left: 50%;
+            top: 50%;
+            margin-left: -20px;
+            margin-top: -20px;
+            width: 40px;
+            height: 40px;
+            transition: all 0.3s ease;
+
+            /* Random Flash Glow Animation */
+            animation: flashGlow 4s ease-in-out infinite;
+        }
+
+        /* Advanced Hover Effect: Pause orbit and scale item */
+        .profile-orbit-container:hover .orbit-animation-ring,
+        .profile-orbit-container:hover .orbit-item img {
+            animation-play-state: paused;
+        }
+
+        .orbit-item:hover {
+            transform: scale(1.2) !important;
+            /* Override transform from positioning temporarily not easy without JS or layout change */
+            /* Actually, scaling transform on an element that is already transformed for position is tricky in pure CSS without appending. */
+            /* Better to scale the inner image or use a wrapper. Let's scale the border/box shadow or brightness. */
+            border-color: #60A5FA;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+            z-index: 10;
+        }
+
+        /* Animate the inner image to keep it upright + Pulse */
+        .orbit-item img {
+            animation: orbitCounterSpin 25s linear infinite, floatPulse 3s ease-in-out infinite;
+        }
+
+        /* Positioning items in a STRICT CIRCLE (Radius reduced to fit card) 
+           Mobile Radius: 85px (was 95px)
+           8 items = 360 / 8 = 45 degrees step */
+
+        .item-1 {
+            transform: rotate(0deg) translate(85px) rotate(0deg);
+            animation-delay: 0s;
+        }
+
+        .item-2 {
+            transform: rotate(45deg) translate(85px) rotate(-45deg);
+            animation-delay: 1.5s;
+        }
+
+        .item-3 {
+            transform: rotate(90deg) translate(85px) rotate(-90deg);
+            animation-delay: 0.5s;
+        }
+
+        .item-4 {
+            transform: rotate(135deg) translate(85px) rotate(-135deg);
+            animation-delay: 2.5s;
+        }
+
+        .item-5 {
+            transform: rotate(180deg) translate(85px) rotate(-180deg);
+            animation-delay: 1s;
+        }
+
+        .item-6 {
+            transform: rotate(225deg) translate(85px) rotate(-225deg);
+            animation-delay: 3s;
+        }
+
+        .item-7 {
+            transform: rotate(270deg) translate(85px) rotate(-270deg);
+            animation-delay: 0.2s;
+        }
+
+        .item-8 {
+            transform: rotate(315deg) translate(85px) rotate(-315deg);
+            animation-delay: 2s;
+        }
+
+        @media (min-width: 768px) {
+            .orbit-item {
+                width: 48px;
+                height: 48px;
+                margin-left: -24px;
+                margin-top: -24px;
+            }
+
+            /* Larger radius for desktop but constrained: 110px (was 130px) */
+            .item-1 {
+                transform: rotate(0deg) translate(110px) rotate(0deg);
+            }
+
+            .item-2 {
+                transform: rotate(45deg) translate(110px) rotate(-45deg);
+            }
+
+            .item-3 {
+                transform: rotate(90deg) translate(110px) rotate(-90deg);
+            }
+
+            .item-4 {
+                transform: rotate(135deg) translate(110px) rotate(-135deg);
+            }
+
+            .item-5 {
+                transform: rotate(180deg) translate(110px) rotate(-180deg);
+            }
+
+            .item-6 {
+                transform: rotate(225deg) translate(110px) rotate(-225deg);
+            }
+
+            .item-7 {
+                transform: rotate(270deg) translate(110px) rotate(-270deg);
+            }
+
+            .item-8 {
+                transform: rotate(315deg) translate(110px) rotate(-315deg);
+            }
+        }
+
+        @keyframes orbitSpin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Flash Glow Keyframes for Twinkling Effect */
+        @keyframes flashGlow {
+
+            0%,
+            100% {
+                background: rgba(17, 24, 39, 0.9);
+                border-color: rgba(59, 130, 246, 0.4);
+                box-shadow: 0 0 15px rgba(59, 130, 246, 0.25);
+                z-index: 1;
+            }
+
+            10%,
+            20% {
+                /* Brief bright flash */
+                background: rgba(59, 130, 246, 0.3);
+                border-color: #60A5FA;
+                box-shadow: 0 0 30px rgba(59, 130, 246, 0.8);
+                z-index: 5;
+            }
+        }
+
+        @keyframes orbitCounterSpin {
+            from {
+                transform: rotate(360deg);
+            }
+
+            /* Starts at 360 to counter the 0->360 of parent? No, just rotate reverse */
+            to {
+                transform: rotate(0deg);
+            }
+        }
+
+        /* Wait, using 'transform' property in animation will override the specific placement transforms (translate) defined in the class! */
+        /* CORRECT APPROACH: Wrap each item in a 'spoke' that rotates, OR leave them in place and rotate the RING. */
+
+        /* If I rotate the .orbit-animation-ring div: */
+        /* The children orbit. */
+        /* To keep children upright: I need to rotate the children in reverse. */
+
+        /* ISSUE with previous approach: The class .item-1 has `transform: ...`. The animation `orbitCounterSpin` also uses `transform`. They conflict. */
+
+        /* BETTER APPROACH: */
+        /* .orbit-animation-ring { animation: spin ... } */
+        /* .orbit-item { animation: counterSpin ... } */
+        /* BUT .orbit-item needs `translate(85px)` to be offset. */
+
+        /* Solution: */
+        /* 1. .orbit-spoke (absolute, center, rotates to specific angle) */
+        /* 2. .orbit-item (inside spoke, pushed out by margin or absolute, animates counter-spin) */
+
+        /* modifying CSS plan on the fly... */
 
         /* Advanced About Section with Cyber Border */
         #about-card {
