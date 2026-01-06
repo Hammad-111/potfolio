@@ -269,6 +269,40 @@
             text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
         }
 
+        /* Advanced Liquid Tech Text Animation */
+        .liquid-tech-text {
+            background: linear-gradient(to right,
+                    #60A5FA,
+                    #A855F7,
+                    #EC4899,
+                    #3B82F6,
+                    #60A5FA);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: liquidFlow 8s linear infinite;
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes liquidFlow {
+            0% {
+                background-position: 0% 50%;
+                filter: brightness(1);
+            }
+
+            50% {
+                background-position: 100% 50%;
+                filter: brightness(1.2) drop-shadow(0 0 15px rgba(59, 130, 246, 0.4));
+            }
+
+            100% {
+                background-position: 200% 50%;
+                filter: brightness(1);
+            }
+        }
+
 
         /* Main Card Orbit Animation */
         .orbit-animation-ring {
