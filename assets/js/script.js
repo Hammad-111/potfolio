@@ -543,11 +543,13 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(scroll);
     }
 
-    // Initialize after a short delay
+    // Initialize after a short delay (Stopped auto-scroll as per user request to 'stop' continuous movement)
+    /* 
     setTimeout(() => {
         initAutoScroll('skills-slider-new', 1.0); // 1px per frame approx
         initAutoScroll('projects-slider', 1.2);   // Slightly faster projects
     }, 1000);
+    */
 
 
     // --- PROJECTS GRID & FILTERING LOGIC ---
