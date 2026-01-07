@@ -3491,3 +3491,34 @@
         .footer-heading-glow {
             text-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
         }
+
+        /* Advanced Slider Progress Animation */
+        @keyframes slideProgress {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        @keyframes scanlineMove {
+            0% {
+                transform: translateY(-100%);
+            }
+
+            100% {
+                transform: translateY(100%);
+            }
+        }
+
+        @keyframes dataStream {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(400%);
+            }
+        }

@@ -27,11 +27,15 @@
     <meta property="twitter:description"
         content="Building scalable web and mobile solutions with cutting-edge technologies.">
 
+    <!-- Preconnect to external domains for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://unpkg.com">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
@@ -781,6 +785,49 @@
                         <i data-lucide="chevron-right"></i>
                     </button>
                 </div>
+
+                <!-- Ultra-Modern Cyber Progress Bar -->
+                <div class="max-w-7xl mx-auto mt-8 px-6">
+                    <div
+                        class="relative h-3 bg-gray-950/80 rounded-lg overflow-hidden border border-blue-500/30 backdrop-blur-sm">
+                        <!-- Cyber grid background -->
+                        <div class="absolute inset-0 opacity-20"
+                            style="background-image: repeating-linear-gradient(90deg, rgba(59,130,246,0.1) 0px, transparent 1px, transparent 10px), repeating-linear-gradient(0deg, rgba(59,130,246,0.1) 0px, transparent 1px, transparent 10px); background-size: 10px 10px;">
+                        </div>
+
+                        <!-- Holographic scanline -->
+                        <div class="absolute inset-0 bg-gradient-to-b from-blue-400/20 via-transparent to-transparent"
+                            style="animation: scanlineMove 2s linear infinite;"></div>
+
+                        <!-- Primary energy bar -->
+                        <div class="absolute inset-0 h-full bg-gradient-to-r from-blue-600 via-cyan-500 to-purple-600"
+                            style="animation: slideProgress 5s linear infinite;"></div>
+
+                        <!-- Data stream overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+                            style="width: 30%; animation: dataStream 3s linear infinite;"></div>
+
+                        <!-- Top glass reflection -->
+                        <div class="absolute inset-0 h-1/3 bg-gradient-to-b from-white/50 to-transparent"></div>
+
+                        <!-- Energy particles -->
+                        <div class="absolute top-1/2 -translate-y-1/2 left-[10%] w-1.5 h-1.5 bg-cyan-300 rounded-full shadow-[0_0_8px_#67e8f9] animate-ping"
+                            style="animation-delay: 0s;"></div>
+                        <div class="absolute top-1/2 -translate-y-1/2 left-[30%] w-1.5 h-1.5 bg-blue-300 rounded-full shadow-[0_0_8px_#93c5fd] animate-ping"
+                            style="animation-delay: 0.3s;"></div>
+                        <div class="absolute top-1/2 -translate-y-1/2 left-[50%] w-1.5 h-1.5 bg-purple-300 rounded-full shadow-[0_0_8px_#c4b5fd] animate-ping"
+                            style="animation-delay: 0.6s;"></div>
+                        <div class="absolute top-1/2 -translate-y-1/2 left-[70%] w-1.5 h-1.5 bg-pink-300 rounded-full shadow-[0_0_8px_#f9a8d4] animate-ping"
+                            style="animation-delay: 0.9s;"></div>
+                        <div class="absolute top-1/2 -translate-y-1/2 left-[90%] w-1.5 h-1.5 bg-cyan-300 rounded-full shadow-[0_0_8px_#67e8f9] animate-ping"
+                            style="animation-delay: 1.2s;"></div>
+
+                        <!-- Bottom glow -->
+                        <div
+                            class="absolute -bottom-1 left-0 right-0 h-2 bg-gradient-to-t from-blue-500/30 to-transparent blur-sm">
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -821,6 +868,49 @@
                     <button class="slider-nav-btn next" id="slider-next">
                         <i data-lucide="chevron-right"></i>
                     </button>
+                </div>
+
+                <!-- Ultra-Modern Cyber Progress Bar -->
+                <div class="max-w-6xl mx-auto mt-8 px-6">
+                    <div
+                        class="relative h-3 bg-gray-950/80 rounded-lg overflow-hidden border border-purple-500/30 backdrop-blur-sm">
+                        <!-- Cyber grid background -->
+                        <div class="absolute inset-0 opacity-20"
+                            style="background-image: repeating-linear-gradient(90deg, rgba(168,85,247,0.1) 0px, transparent 1px, transparent 10px), repeating-linear-gradient(0deg, rgba(168,85,247,0.1) 0px, transparent 1px, transparent 10px); background-size: 10px 10px;">
+                        </div>
+
+                        <!-- Holographic scanline -->
+                        <div class="absolute inset-0 bg-gradient-to-b from-purple-400/20 via-transparent to-transparent"
+                            style="animation: scanlineMove 2s linear infinite;"></div>
+
+                        <!-- Primary energy bar -->
+                        <div class="absolute inset-0 h-full bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-600"
+                            style="animation: slideProgress 5s linear infinite;"></div>
+
+                        <!-- Data stream overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+                            style="width: 30%; animation: dataStream 3s linear infinite;"></div>
+
+                        <!-- Top glass reflection -->
+                        <div class="absolute inset-0 h-1/3 bg-gradient-to-b from-white/50 to-transparent"></div>
+
+                        <!-- Energy particles -->
+                        <div class="absolute top-1/2 -translate-y-1/2 left-[10%] w-1.5 h-1.5 bg-purple-300 rounded-full shadow-[0_0_8px_#c4b5fd] animate-ping"
+                            style="animation-delay: 0s;"></div>
+                        <div class="absolute top-1/2 -translate-y-1/2 left-[30%] w-1.5 h-1.5 bg-pink-300 rounded-full shadow-[0_0_8px_#f9a8d4] animate-ping"
+                            style="animation-delay: 0.3s;"></div>
+                        <div class="absolute top-1/2 -translate-y-1/2 left-[50%] w-1.5 h-1.5 bg-cyan-300 rounded-full shadow-[0_0_8px_#67e8f9] animate-ping"
+                            style="animation-delay: 0.6s;"></div>
+                        <div class="absolute top-1/2 -translate-y-1/2 left-[70%] w-1.5 h-1.5 bg-blue-300 rounded-full shadow-[0_0_8px_#93c5fd] animate-ping"
+                            style="animation-delay: 0.9s;"></div>
+                        <div class="absolute top-1/2 -translate-y-1/2 left-[90%] w-1.5 h-1.5 bg-purple-300 rounded-full shadow-[0_0_8px_#c4b5fd] animate-ping"
+                            style="animation-delay: 1.2s;"></div>
+
+                        <!-- Bottom glow -->
+                        <div
+                            class="absolute -bottom-1 left-0 right-0 h-2 bg-gradient-to-t from-purple-500/30 to-transparent blur-sm">
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1531,10 +1621,12 @@
 
 
 
+    <!-- Deferred scripts for better performance -->
+    <script src="https://unpkg.com/lucide@latest" defer></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
 
     <!-- GSAP & Lenis -->
 

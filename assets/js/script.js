@@ -2,12 +2,12 @@
 const header = document.getElementById('header');
 const mobileMenu = document.getElementById('mobile-menu');
 
-// --- Initialize Lenis (Smooth Scrolling) ---
+// --- Initialize Lenis (Smooth Scrolling) - Optimized for Performance ---
 const lenis = new Lenis({
-    lerp: 0.05, // Ultra-smooth heavy feel
+    lerp: 0.1, // Increased from 0.05 for better performance
     smoothWheel: true,
     wheelMultiplier: 1,
-    touchMultiplier: 0.8, // Maximum control for mobile
+    touchMultiplier: 0.8,
     smoothTouch: true,
     infinite: false,
 });
@@ -66,11 +66,11 @@ const initHeavyLibraries = () => {
         scale: 1.02
     });
 
-    // Initialize Particles.js
+    // Initialize Particles.js - Optimized
     if (window.particlesJS && document.getElementById('particles-js')) {
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "number": { "value": 40, "density": { "enable": true, "value_area": 800 } }, // Reduced from 80
                 "color": { "value": "#3b82f6" },
                 "shape": { "type": "circle" },
                 "opacity": { "value": 0.3, "random": false },
@@ -450,14 +450,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // GSAP Staggered Entry Animation (Explosive)
+        // GSAP Staggered Entry Animation - Optimized
         gsap.from("#skills-slider-new .skill-item", {
-            duration: 0.8,
-            scale: 0.5,
-            y: 60,
+            duration: 0.6, // Reduced from 0.8
+            scale: 0.7, // Less dramatic
+            y: 40, // Reduced from 60
             opacity: 0,
-            stagger: 0.06,
-            ease: "expo.out",
+            stagger: 0.03, // Reduced from 0.06
+            ease: "power3.out", // Faster ease
             clearProps: "all"
         });
     }
@@ -543,10 +543,10 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(scroll);
     }
 
-    // Initialize after a short delay - RESTORED LIVE MOVEMENT
+    // Initialize after a short delay - RESTORED LIVE MOVEMENT - FASTER SPEED
     setTimeout(() => {
-        initAutoScroll('skills-slider-new', 1.0); // 1px per frame approx
-        initAutoScroll('projects-slider', 1.2);   // Slightly faster projects
+        initAutoScroll('skills-slider-new', 1.8); // Increased from 1.0 for faster movement
+        initAutoScroll('projects-slider', 2.2);   // Increased from 1.2 for faster movement
     }, 1000);
 
 
@@ -1011,12 +1011,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Initialize AOS (Keep for simple fade-ups if desired, or replace fully with GSAP)
-    AOS.init({
-        duration: 1000,
-        once: true,
-        offset: 100,
-    });
+    // Initialize AOS with optimized settings
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800, // Faster animations
+            once: true,
+            offset: 50, // Reduced offset for earlier trigger
+            easing: 'ease-out-cubic',
+            disable: false
+        });
+    }
 
 
 
@@ -1048,11 +1052,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 duration: 0.8,
             }, '-=0.3')
             .from('#about-card .grid > div', {
-                scale: 0.9,
-                opacity: 0.8, // Almost fully visible from start
-                duration: 0.5,
-                stagger: 0.1,
-                ease: 'back.out(1.7)',
+                scale: 0.95, // Less dramatic
+                opacity: 0.8,
+                duration: 0.4, // Faster
+                stagger: 0.05, // Reduced from 0.1
+                ease: 'power2.out',
                 onComplete: () => {
                     animateCounters();
                 }
