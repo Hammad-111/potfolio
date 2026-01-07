@@ -543,13 +543,11 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(scroll);
     }
 
-    // Initialize after a short delay (Stopped auto-scroll as per user request to 'stop' continuous movement)
-    /* 
+    // Initialize after a short delay - RESTORED LIVE MOVEMENT
     setTimeout(() => {
         initAutoScroll('skills-slider-new', 1.0); // 1px per frame approx
         initAutoScroll('projects-slider', 1.2);   // Slightly faster projects
     }, 1000);
-    */
 
 
     // --- PROJECTS GRID & FILTERING LOGIC ---
@@ -642,6 +640,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             aboutCard.style.setProperty('--x', `${x}px`);
             aboutCard.style.setProperty('--y', `${y}px`);
+        });
+
+        // V16: Holographic Depth Tracking for Stat Cards
+        const statCards = document.querySelectorAll('.group\\/stat');
+        statCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty('--mouse-x', `${x}%`);
+                card.style.setProperty('--mouse-y', `${y}%`);
+            });
         });
     }
 
@@ -986,17 +996,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // Section Headers ScrollTrigger
+    // Section Headers ScrollTrigger - Improved for Visibility
     gsap.utils.toArray("section h2").forEach(header => {
         gsap.from(header, {
             scrollTrigger: {
                 trigger: header,
-                start: "top 80%",
+                start: "top 95%", // Trigger earlier
                 toggleActions: "play none none reverse"
             },
-            y: 50,
-            opacity: 0,
-            duration: 1,
+            y: 30, // Subtle lift
+            opacity: 0.5, // Start partially visible to avoid "gone" look
+            duration: 1.2,
             ease: "power3.out"
         });
     });
@@ -1022,29 +1032,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         aboutTl.from('#about-card .lg\\:w-2\\/5', {
             x: -50,
-            opacity: 0,
+            opacity: 0.5, // Start visible but faded
             duration: 1,
             ease: 'power3.out'
         })
             .from('#about-card .lg\\:w-3\\/5 > div', {
                 y: 30,
-                opacity: 0,
+                opacity: 0.5,
                 duration: 0.8,
                 ease: 'power3.out'
             }, '-=0.5')
             .from('#about-card p', {
                 y: 20,
-                opacity: 0,
+                opacity: 0.5,
                 duration: 0.8,
             }, '-=0.3')
             .from('#about-card .grid > div', {
-                scale: 0.8,
-                opacity: 0,
+                scale: 0.9,
+                opacity: 0.8, // Almost fully visible from start
                 duration: 0.5,
                 stagger: 0.1,
                 ease: 'back.out(1.7)',
                 onComplete: () => {
-                    // Trigger counters if they haven't started
                     animateCounters();
                 }
             }, '-=0.5');
@@ -1222,4 +1231,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // --- Next-Gen HUD Telemetry Update (V13) ---
+    function initHUDTelemetry() {
+        const labels = document.querySelectorAll('.telemetry-label');
+        labels.forEach(label => {
+            setInterval(() => {
+                if (Math.random() > 0.4) {
+                    const x = Math.floor(Math.random() * 99).toString().padStart(2, '0');
+                    const y = Math.floor(Math.random() * 99).toString().padStart(2, '0');
+                    if (label.innerText.includes('X:')) {
+                        label.innerText = `[X:${x} Y:${y}]`;
+                    }
+                }
+            }, 3000 + Math.random() * 5000);
+        });
+    }
+    initHUDTelemetry();
 });
