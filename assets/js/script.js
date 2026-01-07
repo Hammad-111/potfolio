@@ -2,42 +2,70 @@
 const header = document.getElementById('header');
 const mobileMenu = document.getElementById('mobile-menu');
 
-// --- Initialize Lenis (Smooth Scrolling) - Optimized for Performance ---
-const lenis = new Lenis({
-    lerp: 0.1, // Increased from 0.05 for better performance
-    smoothWheel: true,
-    wheelMultiplier: 1,
-    touchMultiplier: 0.8,
-    smoothTouch: true,
-    infinite: false,
-});
+// --- Initialize Lenis (Smooth Scrolling) - Desktop Only ---
+// Disable on mobile for better native scroll performance
+const isMobile = window.innerWidth < 768;
+let lenis = null;
 
-// Sync Lenis with GSAP & ScrollTrigger
-lenis.on('scroll', (e) => {
-    ScrollTrigger.update();
+if (!isMobile) {
+    lenis = new Lenis({
+        lerp: 0.1,
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        infinite: false,
+    });
 
-    // Header Glass Effect
-    if (header) {
-        if (e.scroll > 50) {
-            header.classList.add('glass-effect');
-        } else {
-            header.classList.remove('glass-effect');
+    // Sync Lenis with GSAP & ScrollTrigger
+    lenis.on('scroll', (e) => {
+        ScrollTrigger.update();
+
+        // Header Glass Effect
+        if (header) {
+            if (e.scroll > 50) {
+                header.classList.add('glass-effect');
+            } else {
+                header.classList.remove('glass-effect');
+            }
         }
-    }
 
-    // Scroll Progress Bar
-    const scrollBar = document.getElementById('scroll-progress');
-    if (scrollBar) {
-        const scrolled = (e.progress * 100);
-        scrollBar.style.width = scrolled + "%";
-    }
-});
+        // Scroll Progress Bar
+        const scrollBar = document.getElementById('scroll-progress');
+        if (scrollBar) {
+            const scrolled = (e.progress * 100);
+            scrollBar.style.width = scrolled + "%";
+        }
+    });
 
-gsap.ticker.add((time) => {
-    lenis.raf(time * 1000);
-});
+    gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+    });
 
-gsap.ticker.lagSmoothing(0);
+    gsap.ticker.lagSmoothing(0);
+} else {
+    // Mobile: Use native scroll with manual header and progress updates
+    window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+        // Header Glass Effect
+        if (header) {
+            if (scrollY > 50) {
+                header.classList.add('glass-effect');
+            } else {
+                header.classList.remove('glass-effect');
+            }
+        }
+
+        // Scroll Progress Bar
+        const scrollBar = document.getElementById('scroll-progress');
+        if (scrollBar) {
+            const scrolled = (scrollY / docHeight) * 100;
+            scrollBar.style.width = scrolled + "%";
+        }
+
+        ScrollTrigger.update();
+    });
+}
 
 // GSAP ScrollTrigger Configuration for Chrome Stabilization
 gsap.registerPlugin(ScrollTrigger);
