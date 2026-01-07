@@ -1281,3 +1281,76 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     initHUDTelemetry();
 });
+
+// Services Section GSAP Animation
+gsap.from("#services-grid .service-card-advanced", {
+    scrollTrigger: {
+        trigger: "#services-grid",
+        start: "top 80%",
+        toggleActions: "play none none reverse"
+    },
+    y: 60,
+    opacity: 0,
+    scale: 0.9,
+    duration: 0.8,
+    stagger: 0.15,
+    ease: "power3.out"
+});
+
+// Ultra-Modern 2026 Services Animation
+gsap.from("#services-grid-2026 .service-card-2026", {
+    scrollTrigger: {
+        trigger: "#services-grid-2026",
+        start: "top 75%",
+        toggleActions: "play none none reverse"
+    },
+    y: 80,
+    opacity: 0,
+    scale: 0.95,
+    rotationX: 15,
+    duration: 1,
+    stagger: {
+        amount: 0.6,
+        from: "start",
+        ease: "power2.out"
+    },
+    ease: "power3.out"
+});
+
+// Stat Cards Scroll Animation (About Section)
+gsap.from(".stat-card", {
+    scrollTrigger: {
+        trigger: ".stat-card",
+        start: "top 85%",
+        end: "bottom 15%",
+        toggleActions: "play reverse play reverse"
+    },
+    y: 60,
+    opacity: 0,
+    scale: 0.9,
+    duration: 0.8,
+    stagger: 0.15,
+    ease: "power3.out"
+});
+
+// About Card Stats Grid Animation
+gsap.from("#stats-grid > div", {
+    scrollTrigger: {
+        trigger: "#stats-grid",
+        start: "top 80%",
+        end: "bottom 20%",
+        toggleActions: "play reverse play reverse"
+    },
+    y: 80,
+    opacity: 0,
+    scale: 0.9,
+    rotationX: 10,
+    duration: 1.2,
+    stagger: {
+        amount: 0.5,
+        from: "start",
+        ease: "power2.out"
+    },
+    ease: "power3.out",
+    immediateRender: false
+});

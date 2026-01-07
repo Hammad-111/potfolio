@@ -584,62 +584,164 @@
         </section>
 
         <!-- Services Section -->
-        <section id="services" class="py-16 bg-gray-900" data-aos="fade-up">
+        <!-- Ultra-Modern 2026 Services Section -->
+        <section id="services" class="py-32 relative overflow-hidden">
+            <div class="container mx-auto px-6 relative z-10">
+                <!-- Section Header -->
+                <div class="text-center mb-20">
+                    <div class="inline-block mb-6">
+                        <span
+                            class="px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-semibold tracking-wider backdrop-blur-sm">
+                            WHAT I OFFER
+                        </span>
+                    </div>
+                    <h2 class="text-5xl md:text-6xl font-bold text-white mb-6">
+                        Premium <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">Digital
+                            Services</span>
+                    </h2>
+                    <p class="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">
+                        Crafting <span class="text-blue-400 font-semibold">next-generation solutions</span> with
+                        cutting-edge
+                        technology and innovative design thinking
+                    </p>
+                </div>
 
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-12">My <span
-                        class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Services</span>
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <!-- Service 1 -->
-                    <div
-                        class="service-card p-6 glass-effect rounded-2xl hover:bg-gray-800 transition-all duration-300 group">
-                        <div
-                            class="w-14 h-14 bg-blue-600/20 rounded-lg flex items-center justify-center mb-6 text-blue-400 group-hover:text-white group-hover:bg-blue-600 transition-colors">
-                            <i data-lucide="layout" class="w-8 h-8"></i>
+                <!-- Services Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="services-grid-2026">
+                    <!-- Service 1: Web Development -->
+                    <div class="service-card-2026 group" data-service="web">
+                        <div class="service-card-glow"></div>
+                        <div class="service-card-content">
+                            <!-- Floating orb -->
+                            <div class="service-orb">
+                                <div class="orb-inner bg-gradient-to-br from-blue-400 to-cyan-500"></div>
+                                <div class="orb-ring"></div>
+                            </div>
+
+                            <!-- Icon -->
+                            <div class="service-icon-wrapper">
+                                <div class="service-icon-bg bg-blue-500/20"></div>
+                                <i data-lucide="code-2" class="service-icon text-blue-400"></i>
+                            </div>
+
+                            <!-- Content -->
+                            <h3 class="service-title">Web Development</h3>
+                            <p class="service-description">
+                                Full-stack solutions with React, Next.js, and Node.js. Building scalable, performant web
+                                applications.
+                            </p>
+
+                            <!-- Tech tags -->
+                            <div class="service-tags">
+                                <span class="service-tag">React</span>
+                                <span class="service-tag">Next.js</span>
+                                <span class="service-tag">Node.js</span>
+                            </div>
+
+                            <!-- Hover indicator -->
+                            <div class="service-arrow">
+                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            </div>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Web Development</h3>
-                        <p class="text-gray-400 text-sm">Building responsive, high-performance websites using MERN
-                            stack, Next.js, and modern technologies.</p>
                     </div>
-                    <!-- Service 2 -->
-                    <div
-                        class="service-card p-6 glass-effect rounded-2xl hover:bg-gray-800 transition-all duration-300 group">
-                        <div
-                            class="w-14 h-14 bg-purple-600/20 rounded-lg flex items-center justify-center mb-6 text-purple-400 group-hover:text-white group-hover:bg-purple-600 transition-colors">
-                            <i data-lucide="smartphone" class="w-8 h-8"></i>
+
+                    <!-- Service 2: Mobile Apps -->
+                    <div class="service-card-2026 group" data-service="mobile">
+                        <div class="service-card-glow"></div>
+                        <div class="service-card-content">
+                            <div class="service-orb">
+                                <div class="orb-inner bg-gradient-to-br from-purple-400 to-pink-500"></div>
+                                <div class="orb-ring"></div>
+                            </div>
+
+                            <div class="service-icon-wrapper">
+                                <div class="service-icon-bg bg-purple-500/20"></div>
+                                <i data-lucide="smartphone" class="service-icon text-purple-400"></i>
+                            </div>
+
+                            <h3 class="service-title">Mobile Apps</h3>
+                            <p class="service-description">
+                                Cross-platform mobile experiences with React Native and Flutter. Native performance,
+                                unified
+                                codebase.
+                            </p>
+
+                            <div class="service-tags">
+                                <span class="service-tag">React Native</span>
+                                <span class="service-tag">Flutter</span>
+                            </div>
+
+                            <div class="service-arrow">
+                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            </div>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-3">App Development</h3>
-                        <p class="text-gray-400 text-sm">Creating seamless mobile experiences for iOS and Android using
-                            React Native and Flutter.</p>
                     </div>
-                    <!-- Service 3 -->
-                    <div
-                        class="service-card p-6 glass-effect rounded-2xl hover:bg-gray-800 transition-all duration-300 group">
-                        <div
-                            class="w-14 h-14 bg-green-600/20 rounded-lg flex items-center justify-center mb-6 text-green-400 group-hover:text-white group-hover:bg-green-600 transition-colors">
-                            <i data-lucide="database" class="w-8 h-8"></i>
+
+                    <!-- Service 3: Backend & APIs -->
+                    <div class="service-card-2026 group" data-service="backend">
+                        <div class="service-card-glow"></div>
+                        <div class="service-card-content">
+                            <div class="service-orb">
+                                <div class="orb-inner bg-gradient-to-br from-green-400 to-emerald-500"></div>
+                                <div class="orb-ring"></div>
+                            </div>
+
+                            <div class="service-icon-wrapper">
+                                <div class="service-icon-bg bg-green-500/20"></div>
+                                <i data-lucide="server" class="service-icon text-green-400"></i>
+                            </div>
+
+                            <h3 class="service-title">Backend & APIs</h3>
+                            <p class="service-description">
+                                Robust server architecture with microservices, RESTful APIs, and real-time data
+                                processing.
+                            </p>
+
+                            <div class="service-tags">
+                                <span class="service-tag">Node.js</span>
+                                <span class="service-tag">GraphQL</span>
+                            </div>
+
+                            <div class="service-arrow">
+                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            </div>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Backend & APIs</h3>
-                        <p class="text-gray-400 text-sm">Robust server-side solutions with Node.js, Django, and secure
-                            RESTful API integrations.</p>
                     </div>
-                    <!-- Service 4 -->
-                    <div
-                        class="service-card p-6 glass-effect rounded-2xl hover:bg-gray-800 transition-all duration-300 group">
-                        <div
-                            class="w-14 h-14 bg-pink-600/20 rounded-lg flex items-center justify-center mb-6 text-pink-400 group-hover:text-white group-hover:bg-pink-600 transition-colors">
-                            <i data-lucide="pen-tool" class="w-8 h-8"></i>
+
+                    <!-- Service 4: UI/UX Design -->
+                    <div class="service-card-2026 group" data-service="design">
+                        <div class="service-card-glow"></div>
+                        <div class="service-card-content">
+                            <div class="service-orb">
+                                <div class="orb-inner bg-gradient-to-br from-pink-400 to-rose-500"></div>
+                                <div class="orb-ring"></div>
+                            </div>
+
+                            <div class="service-icon-wrapper">
+                                <div class="service-icon-bg bg-pink-500/20"></div>
+                                <i data-lucide="palette" class="service-icon text-pink-400"></i>
+                            </div>
+
+                            <h3 class="service-title">UI/UX Design</h3>
+                            <p class="service-description">
+                                User-centered design with Figma. Creating intuitive interfaces that users love to
+                                interact with.
+                            </p>
+
+                            <div class="service-tags">
+                                <span class="service-tag">Figma</span>
+                                <span class="service-tag">Design Systems</span>
+                            </div>
+
+                            <div class="service-arrow">
+                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            </div>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-3">UI/UX Design</h3>
-                        <p class="text-gray-400 text-sm">Designing intuitive and stunning user interfaces with Figma to
-                            enhance user engagement.</p>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!-- Experience Section -->
+        </section> <!-- Experience Section -->
         <section id="experience" class="py-16 relative overflow-hidden" data-aos="fade-up">
 
             <div class="container mx-auto px-6">
@@ -1472,22 +1574,19 @@
 
                     <!-- Bottom Stats kept as requested but integrated seamlessly -->
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-24 border-t border-white/5 pt-16">
-                        <div class="stat-card glass-effect p-8 rounded-2xl text-center" data-aos="fade-up">
+                        <div class="stat-card glass-effect p-8 rounded-2xl text-center">
                             <div class="text-4xl font-bold text-blue-500 mb-2 counter" data-target="30">0</div>
                             <div class="text-gray-400 text-sm">Projects Completed</div>
                         </div>
-                        <div class="stat-card glass-effect p-8 rounded-2xl text-center" data-aos="fade-up"
-                            data-aos-delay="100">
+                        <div class="stat-card glass-effect p-8 rounded-2xl text-center">
                             <div class="text-4xl font-bold text-purple-500 mb-2 counter" data-target="20">0</div>
                             <div class="text-gray-400 text-sm">Happy Clients</div>
                         </div>
-                        <div class="stat-card glass-effect p-8 rounded-2xl text-center" data-aos="fade-up"
-                            data-aos-delay="200">
+                        <div class="stat-card glass-effect p-8 rounded-2xl text-center">
                             <div class="text-4xl font-bold text-blue-500 mb-2 counter" data-target="2">0</div>
                             <div class="text-gray-400 text-sm">Years Experience</div>
                         </div>
-                        <div class="stat-card glass-effect p-8 rounded-2xl text-center" data-aos="fade-up"
-                            data-aos-delay="300">
+                        <div class="stat-card glass-effect p-8 rounded-2xl text-center">
                             <div class="text-4xl font-bold text-purple-500 mb-2 counter" data-target="15">0</div>
                             <div class="text-gray-400 text-sm">Skill Sets</div>
                         </div>
