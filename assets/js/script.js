@@ -1354,3 +1354,57 @@ gsap.from("#stats-grid > div", {
     ease: "power3.out",
     immediateRender: false
 });
+
+// V34: Magnetic Cursor Effect for Service Cards
+document.querySelectorAll('.service-card-2026').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const deltaX = (x - centerX) / centerX;
+        const deltaY = (y - centerY) / centerY;
+        
+        const rotateX = deltaY * 5;
+        const rotateY = deltaX * 5;
+        
+        card.style.transform = `perspective(1000px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+    });
+    
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+    });
+});
+
+// Animated Counter for Service Cards (on hover)
+document.querySelectorAll('.service-card-2026').forEach((card, index) => {
+    const colors = ['#3b82f6', '#a855f7', '#10b981', '#ec4899'];
+    card.style.setProperty('--card-color', colors[index]);
+});
+
+// V36: Auto-Rotating Hover Effects for Service Cards (for mobile users)
+let currentActiveCard = 0;
+const serviceCards = document.querySelectorAll('.service-card-2026');
+
+function rotateHoverEffect() {
+    // Remove active class from all cards
+    serviceCards.forEach(card => card.classList.remove('auto-hover'));
+    
+    // Add active class to current card
+    if (serviceCards[currentActiveCard]) {
+        serviceCards[currentActiveCard].classList.add('auto-hover');
+    }
+    
+    // Move to next card
+    currentActiveCard = (currentActiveCard + 1) % serviceCards.length;
+}
+
+// Start the rotation (change card every 3 seconds)
+if (serviceCards.length > 0) {
+    setInterval(rotateHoverEffect, 3000);
+    // Initial call
+    rotateHoverEffect();
+}
