@@ -1408,3 +1408,27 @@ if (serviceCards.length > 0) {
     // Initial call
     rotateHoverEffect();
 }
+
+// V39: Auto-Rotating Effects for Experience Cards (for mobile users)
+let currentActiveExperience = 0;
+const experienceCards = document.querySelectorAll('.experience-card');
+
+function rotateExperienceEffect() {
+    // Remove active class from all cards
+    experienceCards.forEach(card => card.classList.remove('auto-hover-exp'));
+    
+    // Add active class to current card
+    if (experienceCards[currentActiveExperience]) {
+        experienceCards[currentActiveExperience].classList.add('auto-hover-exp');
+    }
+    
+    // Move to next card
+    currentActiveExperience = (currentActiveExperience + 1) % experienceCards.length;
+}
+
+// Start the rotation (change card every 4 seconds)
+if (experienceCards.length > 0) {
+    setInterval(rotateExperienceEffect, 4000);
+    // Initial call
+    rotateExperienceEffect();
+}

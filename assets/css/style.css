@@ -4056,3 +4056,319 @@
 .service-card-2026.auto-hover .service-icon-bg::before {
     opacity: 0.3;
 }
+
+/* ========== V37: Live Animations for Experience Timeline ========== */
+
+/* Pulsing Timeline Nodes */
+@keyframes timelineNodePulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+        transform: scale(1.1);
+    }
+}
+
+.timeline-node {
+    animation: timelineNodePulse 2s ease-in-out infinite;
+}
+
+/* Floating Timeline Cards */
+@keyframes floatCard {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.timeline-card {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.timeline-card:hover {
+    animation: floatCard 3s ease-in-out infinite;
+}
+
+/* Animated Border Glow */
+@keyframes borderGlow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(168, 85, 247, 0.6);
+    }
+}
+
+.timeline-card:hover {
+    animation: borderGlow 2s ease-in-out infinite;
+}
+
+/* Shimmer Effect for Cards */
+@keyframes cardShimmer {
+    0% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+.timeline-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 100%
+    );
+    background-size: 200% 100%;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+.timeline-card:hover::before {
+    animation: cardShimmer 2s linear infinite;
+    opacity: 1;
+}
+
+/* Icon Rotation on Hover */
+@keyframes iconRotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.timeline-card:hover .timeline-icon {
+    animation: iconRotate 2s linear infinite;
+}
+
+/* Glowing Timeline Line */
+@keyframes lineGlow {
+    0%, 100% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.8;
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    }
+}
+
+.timeline-line {
+    animation: lineGlow 3s ease-in-out infinite;
+}
+
+/* Content Slide In */
+@keyframes slideInContent {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.timeline-card:hover .timeline-content {
+    animation: slideInContent 0.5s ease-out;
+}
+
+/* Badge Pulse */
+@keyframes badgePulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.timeline-card:hover .timeline-badge {
+    animation: badgePulse 1.5s ease-in-out infinite;
+}
+
+/* Continuous Subtle Glow */
+@keyframes subtleGlow {
+    0%, 100% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.1);
+    }
+}
+
+.timeline-card {
+    animation: subtleGlow 4s ease-in-out infinite;
+}
+
+.timeline-card:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.timeline-card:nth-child(3) {
+    animation-delay: 1s;
+}
+
+.timeline-card:nth-child(4) {
+    animation-delay: 1.5s;
+}
+
+/* Particle Effect on Hover */
+.timeline-card::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: currentColor;
+    border-radius: 50%;
+    top: 10%;
+    right: 10%;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.timeline-card:hover::after {
+    animation: floatParticle 3s ease-in-out infinite;
+    opacity: 0.6;
+}
+
+/* ========== V38: Apply Live Animations to Experience Cards ========== */
+
+/* Target the actual experience card class */
+.experience-card {
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: subtleGlow 4s ease-in-out infinite;
+}
+
+.experience-card:nth-of-type(2) {
+    animation-delay: 0.5s;
+}
+
+.experience-card:nth-of-type(3) {
+    animation-delay: 1s;
+}
+
+.experience-card:nth-of-type(4) {
+    animation-delay: 1.5s;
+}
+
+/* Floating effect on hover */
+.experience-card:hover {
+    transform: translateY(-10px);
+    animation: floatCard 3s ease-in-out infinite, borderGlow 2s ease-in-out infinite;
+}
+
+/* Shimmer effect */
+.experience-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 100%
+    );
+    background-size: 200% 100%;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 1;
+}
+
+.experience-card:hover::before {
+    animation: cardShimmer 2s linear infinite;
+    opacity: 1;
+}
+
+/* Particle effect */
+.experience-card::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #3b82f6;
+    border-radius: 50%;
+    top: 10%;
+    right: 10%;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 1;
+}
+
+.experience-card:hover::after {
+    animation: floatParticle 3s ease-in-out infinite;
+    opacity: 0.6;
+}
+
+/* Timeline node pulse */
+.timeline-node-wrapper {
+    animation: timelineNodePulse 2s ease-in-out infinite;
+}
+
+/* Timeline progress glow */
+.timeline-progress {
+    animation: lineGlow 3s ease-in-out infinite;
+}
+
+/* Icon rotation on hover */
+.experience-card:hover + .timeline-node-wrapper i,
+.group:hover .timeline-node-wrapper i {
+    animation: iconRotate 2s linear infinite;
+}
+
+/* Experience date badge pulse */
+.experience-date {
+    transition: all 0.3s ease;
+}
+
+.group:hover .experience-date {
+    animation: badgePulse 1.5s ease-in-out infinite;
+    transform: scale(1.05);
+}
+
+/* V39: Auto-hover class for experience cards */
+.experience-card.auto-hover-exp {
+    transform: translateY(-10px);
+    animation: floatCard 3s ease-in-out infinite, borderGlow 2s ease-in-out infinite;
+}
+
+.experience-card.auto-hover-exp::before {
+    animation: cardShimmer 2s linear infinite;
+    opacity: 1;
+}
+
+.experience-card.auto-hover-exp::after {
+    animation: floatParticle 3s ease-in-out infinite;
+    opacity: 0.6;
+}
+
+/* Auto-hover for timeline nodes */
+.auto-hover-exp + .timeline-node-wrapper i {
+    animation: iconRotate 2s linear infinite;
+}
+
+/* Auto-hover for experience date badge */
+.group:has(.auto-hover-exp) .experience-date {
+    animation: badgePulse 1.5s ease-in-out infinite;
+    transform: scale(1.05);
+}
