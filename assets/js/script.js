@@ -392,12 +392,7 @@ const allProjects = [
 ];
 
 // --- Existing JS code ---
-// --- AOS Initialization ---
-AOS.init({
-    duration: 1000,
-    once: true,
-    offset: 100,
-});
+// --- AOS Initialization --- (Moved to deferred init below for performance)
 
 // --- Mobile Menu Toggle ---
 const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -720,7 +715,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const progressCircle = document.querySelector('.progress-ring-circle');
         const scrambleText = document.querySelector('.scramble-text');
         const typewriterName = document.getElementById('typewriter-name');
-        const pulseContainer = document.querySelector('.pulse-container');
+        const pulseContainer = document.querySelector('.neural-pulse-container');
         const systemLogs = document.getElementById('system-logs');
         const binaryRain = document.getElementById('binary-rain');
         const cube = document.querySelector('.cube');
@@ -845,6 +840,15 @@ document.addEventListener('DOMContentLoaded', () => {
             "SYSTEM_OPTIMIZATION_SUCCESS",
             "WELCOME_HAMMAD_JAVED"
         ];
+        // 3. Hex Buffer Randomizer
+        const hexTL = document.getElementById('hex-tl');
+        const hexBR = document.getElementById('hex-br');
+        const updateHexData = () => {
+            if (hexTL) hexTL.innerText = '0x' + Math.floor(Math.random() * 65535).toString(16).toUpperCase().padStart(4, '0');
+            if (hexBR) hexBR.innerText = '0x' + Math.floor(Math.random() * 65535).toString(16).toUpperCase().padStart(4, '0');
+        };
+        const hexInterval = setInterval(updateHexData, 200);
+
         const pushLog = (msg) => {
             if (!systemLogs) return;
             const logLine = document.createElement('div');
@@ -1337,43 +1341,7 @@ gsap.from("#services-grid-2026 .service-card-2026", {
     ease: "power3.out"
 });
 
-// Stat Cards Scroll Animation (About Section)
-gsap.from(".stat-card", {
-    scrollTrigger: {
-        trigger: ".stat-card",
-        start: "top 85%",
-        end: "bottom 15%",
-        toggleActions: "play reverse play reverse"
-    },
-    y: 60,
-    opacity: 0,
-    scale: 0.9,
-    duration: 0.8,
-    stagger: 0.15,
-    ease: "power3.out"
-});
-
-// About Card Stats Grid Animation
-gsap.from("#stats-grid > div", {
-    scrollTrigger: {
-        trigger: "#stats-grid",
-        start: "top 80%",
-        end: "bottom 20%",
-        toggleActions: "play reverse play reverse"
-    },
-    y: 80,
-    opacity: 0,
-    scale: 0.9,
-    rotationX: 10,
-    duration: 1.2,
-    stagger: {
-        amount: 0.5,
-        from: "start",
-        ease: "power2.out"
-    },
-    ease: "power3.out",
-    immediateRender: false
-});
+// Stat Cards animation is now handled within the About section timeline and Service grid logic.
 
 // V34: Magnetic Cursor Effect for Service Cards
 document.querySelectorAll('.service-card-2026').forEach(card => {
