@@ -594,7 +594,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize after a short delay - RESTORED
     setTimeout(() => {
         initAutoScroll('skills-slider-new', 1.8);
-        initAutoScroll('projects-slider', 2.2);
+        initAutoScroll('projects-slider', 3.8);
     }, 1000);
 
 

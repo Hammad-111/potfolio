@@ -3004,6 +3004,7 @@
         .project-slider-container .project-card {
             flex: 0 0 calc(33.333% - 14px);
             min-width: 300px;
+            max-width: 380px;
             scroll-snap-align: start;
             transition: transform 0.3s ease;
         }
@@ -3051,19 +3052,19 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 45px;
+            width: 70px;
             height: 45px;
-            border-radius: 50%;
+            border-radius: 12px;
             background: rgba(31, 41, 55, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            z-index: 10;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(8px);
+            z-index: 20;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(12px);
         }
 
         .slider-nav-btn:hover {
@@ -3073,11 +3074,30 @@
         }
 
         .slider-nav-btn.prev {
-            left: -10px;
+            left: -20px;
         }
 
         .slider-nav-btn.next {
-            right: -10px;
+            right: -20px;
+        }
+
+        @media (max-width: 768px) {
+            .slider-nav-btn {
+                width: 50px;
+                height: 40px;
+            }
+
+            .slider-nav-btn.prev {
+                left: 5px;
+            }
+
+            .slider-nav-btn.next {
+                right: 5px;
+            }
+
+            .project-slider-wrapper {
+                padding: 0 10px;
+            }
         }
 
         .filter-btn {
