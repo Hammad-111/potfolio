@@ -1957,6 +1957,19 @@
             border-top: 0;
         }
 
+        /* Mobile Adjustments for HUD Brackets */
+        @media (max-width: 768px) {
+            .hud-brackets {
+                inset: 15px;
+            }
+
+            .hud-bracket {
+                width: 30px;
+                height: 30px;
+                border-width: 1.5px;
+            }
+        }
+
         @keyframes hud-pulse {
 
             0%,
