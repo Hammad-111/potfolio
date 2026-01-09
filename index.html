@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 
 <head>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
@@ -845,91 +845,31 @@
             </div>
         </section>
 
-        <section id="skills" class="py-16 relative overflow-hidden" data-aos="fade-up">
-
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">Professional <span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Skillset</span>
+        <section id="skills" class="py-24 relative overflow-hidden">
+            <div class="container mx-auto px-6 relative z-10">
+                <!-- Section Header -->
+                <div class="text-center mb-10">
+                    <div class="inline-block mb-6">
+                        <span
+                            class="px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-semibold tracking-wider backdrop-blur-sm">
+                            TECHNICAL ARSENAL
+                        </span>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                        Skills & <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">Expertise</span>
                     </h2>
-                    <p class="text-gray-400 max-w-2xl mx-auto">A comprehensive toolkit of <span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">technologies</span>
-                        I use to bring ideas to life.</p>
+                    <p class="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">
+                        A comprehensive overview of my technical capabilities and <span
+                            class="text-blue-400 font-semibold">stack proficiency</span>.
+                    </p>
                 </div>
+            </div>
 
-                <!-- Skill Categories -->
-                <div class="flex flex-wrap justify-center gap-4 mb-12">
-                    <button
-                        class="skill-category-btn active px-6 py-2 rounded-full glass-effect text-sm font-medium text-gray-300 hover:text-white transition-all duration-300 border border-white/10 hover:border-blue-500/50"
-                        data-category="all">All Skills</button>
-                    <button
-                        class="skill-category-btn px-6 py-2 rounded-full glass-effect text-sm font-medium text-gray-300 hover:text-white transition-all duration-300 border border-white/10 hover:border-blue-500/50"
-                        data-category="frontend">Frontend</button>
-                    <button
-                        class="skill-category-btn px-6 py-2 rounded-full glass-effect text-sm font-medium text-gray-300 hover:text-white transition-all duration-300 border border-white/10 hover:border-blue-500/50"
-                        data-category="backend">Backend & DB</button>
-                    <button
-                        class="skill-category-btn px-6 py-2 rounded-full glass-effect text-sm font-medium text-gray-300 hover:text-white transition-all duration-300 border border-white/10 hover:border-blue-500/50"
-                        data-category="core">Core & Tools</button>
-                </div>
-
-                <!-- Slider Wrapper -->
-                <div class="skills-slider-wrapper max-w-7xl mx-auto relative px-12">
-                    <button class="slider-nav-btn prev" id="skills-prev">
-                        <i data-lucide="chevron-left"></i>
-                    </button>
-
-                    <div class="skills-slider-container" id="skills-slider-new">
-                        <!-- Skills will be dynamically injected here -->
-                    </div>
-
-                    <button class="slider-nav-btn next" id="skills-next">
-                        <i data-lucide="chevron-right"></i>
-                    </button>
-                </div>
-
-                <!-- Ultra-Modern Cyber Progress Bar -->
-                <div class="max-w-7xl mx-auto mt-8 px-6">
-                    <div
-                        class="relative h-3 bg-gray-950/80 rounded-lg overflow-hidden border border-blue-500/30 backdrop-blur-sm">
-                        <!-- Cyber grid background -->
-                        <div class="absolute inset-0 opacity-20"
-                            style="background-image: repeating-linear-gradient(90deg, rgba(59,130,246,0.1) 0px, transparent 1px, transparent 10px), repeating-linear-gradient(0deg, rgba(59,130,246,0.1) 0px, transparent 1px, transparent 10px); background-size: 10px 10px;">
-                        </div>
-
-                        <!-- Holographic scanline -->
-                        <div class="absolute inset-0 bg-gradient-to-b from-blue-400/20 via-transparent to-transparent"
-                            style="animation: scanlineMove 2s linear infinite;"></div>
-
-                        <!-- Primary energy bar -->
-                        <div class="absolute inset-0 h-full bg-gradient-to-r from-blue-600 via-cyan-500 to-purple-600"
-                            style="animation: slideProgress 5s linear infinite;"></div>
-
-                        <!-- Data stream overlay -->
-                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
-                            style="width: 30%; animation: dataStream 3s linear infinite;"></div>
-
-                        <!-- Top glass reflection -->
-                        <div class="absolute inset-0 h-1/3 bg-gradient-to-b from-white/50 to-transparent"></div>
-
-                        <!-- Energy particles -->
-                        <div class="absolute top-1/2 -translate-y-1/2 left-[10%] w-1.5 h-1.5 bg-cyan-300 rounded-full shadow-[0_0_8px_#67e8f9] animate-ping"
-                            style="animation-delay: 0s;"></div>
-                        <div class="absolute top-1/2 -translate-y-1/2 left-[30%] w-1.5 h-1.5 bg-blue-300 rounded-full shadow-[0_0_8px_#93c5fd] animate-ping"
-                            style="animation-delay: 0.3s;"></div>
-                        <div class="absolute top-1/2 -translate-y-1/2 left-[50%] w-1.5 h-1.5 bg-purple-300 rounded-full shadow-[0_0_8px_#c4b5fd] animate-ping"
-                            style="animation-delay: 0.6s;"></div>
-                        <div class="absolute top-1/2 -translate-y-1/2 left-[70%] w-1.5 h-1.5 bg-pink-300 rounded-full shadow-[0_0_8px_#f9a8d4] animate-ping"
-                            style="animation-delay: 0.9s;"></div>
-                        <div class="absolute top-1/2 -translate-y-1/2 left-[90%] w-1.5 h-1.5 bg-cyan-300 rounded-full shadow-[0_0_8px_#67e8f9] animate-ping"
-                            style="animation-delay: 1.2s;"></div>
-
-                        <!-- Bottom glow -->
-                        <div
-                            class="absolute -bottom-1 left-0 right-0 h-2 bg-gradient-to-t from-blue-500/30 to-transparent blur-sm">
-                        </div>
-                    </div>
-                </div>
+            <!-- Universe Container -->
+            <!-- Hierarchical Skill Tree Container -->
+            <div id="skill-tree-container" class="relative w-full min-h-[600px] flex justify-center items-center p-4">
+                <!-- JS will inject the tree structure here -->
             </div>
         </section>
 
@@ -1721,11 +1661,11 @@
 
 
     <!-- Deferred scripts for better performance -->
-    <script src="https://unpkg.com/lucide@latest" defer></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
     <!-- GSAP & Lenis -->
 
@@ -1733,7 +1673,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
-    <script src="assets/js/script.js"></script>
+    <script src="assets/js/script.js?v=tree_redesign_v1"></script>
 
     <!-- Project Details Modal -->
 

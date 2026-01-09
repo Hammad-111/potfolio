@@ -13,6 +13,7 @@ if (!isMobile) {
         smoothWheel: true,
         wheelMultiplier: 1,
         infinite: false,
+        syncTouch: false
     });
 
     // Sync Lenis with GSAP & ScrollTrigger
@@ -42,7 +43,6 @@ if (!isMobile) {
 
     gsap.ticker.lagSmoothing(0);
 } else {
-    // Mobile: Use native scroll with manual header and progress updates
     window.addEventListener('scroll', () => {
         const scrollY = window.scrollY;
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -69,7 +69,7 @@ if (!isMobile) {
 
 // GSAP ScrollTrigger Configuration for Chrome Stabilization
 gsap.registerPlugin(ScrollTrigger);
-ScrollTrigger.normalizeScroll(true);
+// ScrollTrigger.normalizeScroll(true); // Disabled as it may conflict with Lenis in Chrome
 ScrollTrigger.config({ limitCallbacks: true });
 
 // --- Heavy Library Initialization (Deferred for Smooth Splash) ---
@@ -147,21 +147,36 @@ const iconMappings = {
 
 const allSkills = [
     { name: 'React/Native', iconClass: 'devicon-react-original colored', category: 'frontend' },
-    { name: 'Next.js', iconClass: 'devicon-nextjs-original-wordmark white', category: 'frontend' }, // Next.js is usually black/white. 'white' or invert needed if dark bg.
+    { name: 'Next.js', iconClass: 'devicon-nextjs-original-wordmark white', category: 'frontend' },
     { name: 'Vue.js', iconClass: 'devicon-vuejs-plain colored', category: 'frontend' },
+    { name: 'TypeScript', iconClass: 'devicon-typescript-plain colored', category: 'frontend' },
+    { name: 'JavaScript', iconClass: 'devicon-javascript-plain colored', category: 'frontend' },
+    { name: 'HTML5', iconClass: 'devicon-html5-plain colored', category: 'frontend' },
+    { name: 'CSS3', iconClass: 'devicon-css3-plain colored', category: 'frontend' },
+    { name: 'Tailwind CSS', iconClass: 'devicon-tailwindcss-plain colored', category: 'frontend' },
+    { name: 'Redux', iconClass: 'devicon-redux-original colored', category: 'frontend' },
+    { name: 'Bootstrap', iconClass: 'devicon-bootstrap-plain colored', category: 'frontend' },
     { name: 'Node.js', iconClass: 'devicon-nodejs-plain-wordmark colored', category: 'backend' },
+    { name: 'Express.js', iconClass: 'devicon-express-original white', category: 'backend' },
     { name: 'Django', iconClass: 'devicon-django-plain colored', category: 'backend' },
-    { name: '.NET', iconClass: 'devicon-dotnetcore-plain colored', category: 'backend' }, // using dotnetcore
+    { name: '.NET', iconClass: 'devicon-dotnetcore-plain colored', category: 'backend' },
     { name: 'MySQL', iconClass: 'devicon-mysql-plain-wordmark colored', category: 'backend' },
+    { name: 'PostgreSQL', iconClass: 'devicon-postgresql-plain colored', category: 'backend' },
     { name: 'MongoDB', iconClass: 'devicon-mongodb-plain-wordmark colored', category: 'backend' },
     { name: 'Firebase', iconClass: 'devicon-firebase-plain colored', category: 'backend' },
-    { name: 'RESTful APIs', iconClass: 'devicon-nodejs-plain colored', category: 'core' }, // Proxy icon
-    { name: 'Payment APIs', iconClass: 'devicon-amazonwebservices-plain-wordmark colored', category: 'core' }, // Proxy icon
+    { name: 'GraphQL', iconClass: 'devicon-graphql-plain colored', category: 'backend' },
+    { name: 'Flutter', iconClass: 'devicon-flutter-plain colored', category: 'frontend' }, /* Mobile is often grouped with frontend or separate, putting in frontend for now or create mobile category if needed, but script maps to FE/BE/Core */
+    { name: 'RESTful APIs', iconClass: 'devicon-nodejs-plain colored', category: 'core' },
+    { name: 'Payment APIs', iconClass: 'devicon-amazonwebservices-plain-wordmark colored', category: 'core' },
     { name: 'Figma', iconClass: 'devicon-figma-plain colored', category: 'frontend' },
     { name: 'Git/GitHub', iconClass: 'devicon-git-plain colored', category: 'core' },
-    { name: 'OOP', iconClass: 'devicon-cplusplus-plain colored', category: 'core' }, // C++ is classic OOP rep
-    { name: 'DSA', iconClass: 'devicon-java-plain colored', category: 'core' }, // Java often used for DSA
-    { name: 'MVC', iconClass: 'devicon-rails-plain-wordmark colored', category: 'core' }, // Rails made MVC famous
+    { name: 'Docker', iconClass: 'devicon-docker-plain colored', category: 'core' },
+    { name: 'AWS', iconClass: 'devicon-amazonwebservices-plain-wordmark colored', category: 'core' },
+    { name: 'Linux', iconClass: 'devicon-linux-plain colored', category: 'core' },
+    { name: 'Postman', iconClass: 'devicon-postman-plain colored', category: 'core' },
+    { name: 'OOP', iconClass: 'devicon-cplusplus-plain colored', category: 'core' },
+    { name: 'DSA', iconClass: 'devicon-java-plain colored', category: 'core' },
+    { name: 'MVC', iconClass: 'devicon-rails-plain-wordmark colored', category: 'core' },
     { name: 'Deployment', iconClass: 'devicon-docker-plain colored', category: 'core' }
 ];
 
@@ -405,11 +420,16 @@ document.querySelectorAll('#mobile-menu a, header a[href^="#"]').forEach(link =>
 
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
-                lenis.scrollTo(targetElement, {
-                    offset: - (document.getElementById('header')?.offsetHeight || 0),
-                    duration: 1.5,
-                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
-                });
+                if (lenis) {
+                    lenis.scrollTo(targetElement, {
+                        offset: - (document.getElementById('header')?.offsetHeight || 0),
+                        duration: 1.5,
+                        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+                    });
+                } else {
+                    // Fallback for native mobile scroll
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
             }
         }
     });
@@ -571,10 +591,10 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(scroll);
     }
 
-    // Initialize after a short delay - RESTORED LIVE MOVEMENT - FASTER SPEED
+    // Initialize after a short delay - RESTORED
     setTimeout(() => {
-        initAutoScroll('skills-slider-new', 1.8); // Increased from 1.0 for faster movement
-        initAutoScroll('projects-slider', 2.2);   // Increased from 1.2 for faster movement
+        initAutoScroll('skills-slider-new', 1.8);
+        initAutoScroll('projects-slider', 2.2);
     }, 1000);
 
 
@@ -1361,19 +1381,19 @@ document.querySelectorAll('.service-card-2026').forEach(card => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        
+
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-        
+
         const deltaX = (x - centerX) / centerX;
         const deltaY = (y - centerY) / centerY;
-        
+
         const rotateX = deltaY * 5;
         const rotateY = deltaX * 5;
-        
+
         card.style.transform = `perspective(1000px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
     });
-    
+
     card.addEventListener('mouseleave', () => {
         card.style.transform = '';
     });
@@ -1392,12 +1412,12 @@ const serviceCards = document.querySelectorAll('.service-card-2026');
 function rotateHoverEffect() {
     // Remove active class from all cards
     serviceCards.forEach(card => card.classList.remove('auto-hover'));
-    
+
     // Add active class to current card
     if (serviceCards[currentActiveCard]) {
         serviceCards[currentActiveCard].classList.add('auto-hover');
     }
-    
+
     // Move to next card
     currentActiveCard = (currentActiveCard + 1) % serviceCards.length;
 }
@@ -1416,19 +1436,236 @@ const experienceCards = document.querySelectorAll('.experience-card');
 function rotateExperienceEffect() {
     // Remove active class from all cards
     experienceCards.forEach(card => card.classList.remove('auto-hover-exp'));
-    
+
     // Add active class to current card
     if (experienceCards[currentActiveExperience]) {
         experienceCards[currentActiveExperience].classList.add('auto-hover-exp');
     }
-    
+
     // Move to next card
     currentActiveExperience = (currentActiveExperience + 1) % experienceCards.length;
 }
 
-// Start the rotation (change card every 4 seconds)
+// Start the rotation (change card every 3 seconds)
 if (experienceCards.length > 0) {
-    setInterval(rotateExperienceEffect, 4000);
+    setInterval(rotateExperienceEffect, 3000);
     // Initial call
     rotateExperienceEffect();
 }
+
+// --- Service Packages (Pricing) GSAP Animation ---
+const pricingCards = document.querySelectorAll('.pricing-card');
+if (pricingCards.length >= 3) {
+    // Left Card
+    gsap.from(pricingCards[0], {
+        x: -100,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power4.out",
+        scrollTrigger: {
+            trigger: "#pricing",
+            start: "top 80%",
+            toggleActions: "play none none reverse"
+        }
+    });
+    // Middle Card (Up)
+    gsap.from(pricingCards[1], {
+        y: 100,
+        opacity: 0,
+        duration: 1.2,
+        delay: 0.2,
+        ease: "power4.out",
+        scrollTrigger: {
+            trigger: "#pricing",
+            start: "top 80%",
+            toggleActions: "play none none reverse"
+        }
+    });
+    // Right Card
+    gsap.from(pricingCards[2], {
+        x: 100,
+        opacity: 0,
+        duration: 1.2,
+        delay: 0.4,
+        ease: "power4.out",
+        scrollTrigger: {
+            trigger: "#pricing",
+            start: "top 80%",
+            toggleActions: "play none none reverse"
+        }
+    });
+}
+
+// Holographic Skill Universe Logic
+// Hierarchical Skill Tree Logic
+function initSkillTree() {
+    console.log("Initializing Skill Tree...");
+    const container = document.getElementById('skill-tree-container');
+    if (!container) return;
+
+    if (typeof allSkills === 'undefined' || !allSkills.length) {
+        console.error("allSkills data missing!");
+        return;
+    }
+
+    container.innerHTML = '';
+
+    // 1. Group Skills by Category
+    const categories = {
+        'Frontend': [],
+        'Backend': [],
+        'Core/Tools': []
+    };
+
+    allSkills.forEach(skill => {
+        if (skill.category === 'frontend') categories['Frontend'].push(skill);
+        else if (skill.category === 'backend') categories['Backend'].push(skill);
+        else categories['Core/Tools'].push(skill); // Fallback for 'core'
+    });
+
+    // 2. Build Tree Structure
+    const wrapper = document.createElement('div');
+    wrapper.className = 'skill-tree-wrapper';
+
+    // Level 1: Root
+    const rootNode = document.createElement('div');
+    rootNode.className = 'tree-root-node';
+    rootNode.textContent = "MY SKILLS";
+    wrapper.appendChild(rootNode);
+
+    // Connector: Root to Categories - Now handled by CSS pseudo-element on rootNode
+    // const rootBranch = document.createElement('div');
+    // rootBranch.className = 'tree-branch';
+    // ... removed code ...
+
+    // Horizontal Connector (The bar connecting branches)
+    const horizontalConnector = document.createElement('div');
+    horizontalConnector.className = 'tree-connector-horizontal';
+    wrapper.appendChild(horizontalConnector);
+
+    // Level 2: Categories Row
+    const catRow = document.createElement('div');
+    catRow.className = 'tree-categories-row';
+
+    // Create Columns for each category
+    Object.keys(categories).forEach((catName, index) => {
+        const catGroup = document.createElement('div');
+        catGroup.className = 'tree-category-group';
+
+        // Category Title
+        const catTitle = document.createElement('div');
+        catTitle.className = 'tree-category-title';
+        catTitle.textContent = catName;
+        catGroup.appendChild(catTitle);
+
+        // Skills Grid
+        const skillsGrid = document.createElement('div');
+        skillsGrid.className = 'tree-skills-grid';
+
+        categories[catName].forEach(skill => {
+            const skillNode = document.createElement('div');
+            skillNode.className = 'tree-skill-node';
+            skillNode.innerHTML = `
+                <i class="${skill.iconClass}"></i>
+                <span>${skill.name}</span>
+            `;
+
+            // Interactive Path Highlighting
+            skillNode.addEventListener('mouseenter', () => {
+                skillNode.classList.add('active-path');
+                // Highlight Parent Category Group (lights up vertical line via pseudo-element)
+                catGroup.classList.add('active-path');
+                // Highlight Category Title
+                catTitle.classList.add('active-path');
+                // Highlight Horizontal Connector
+                horizontalConnector.classList.add('active-path');
+                // Highlight Root Node
+                rootNode.classList.add('active-path');
+            });
+
+            skillNode.addEventListener('mouseleave', () => {
+                skillNode.classList.remove('active-path');
+                catGroup.classList.remove('active-path');
+                catTitle.classList.remove('active-path');
+                horizontalConnector.classList.remove('active-path');
+                rootNode.classList.remove('active-path');
+            });
+
+            skillsGrid.appendChild(skillNode);
+        });
+
+        catGroup.appendChild(skillsGrid);
+        catRow.appendChild(catGroup);
+    });
+
+    wrapper.appendChild(catRow);
+    container.appendChild(wrapper);
+
+    // 3. GSAP Animation (Bloom Effect) with ScrollTrigger
+    const tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: "#skill-tree-container",
+            start: "top 80%", // Start when top of container hits 80% viewport
+            toggleActions: "play none none reverse"
+        }
+    });
+
+    // Root Pop - Using immediateRender: false to prevent race conditions
+    tl.from('.tree-root-node', {
+        scale: 0,
+        opacity: 0,
+        duration: 0.8,
+        ease: "back.out(1.7)",
+        immediateRender: false
+    });
+
+    // Categories Glow Up
+    tl.fromTo('.tree-category-title',
+        {
+            y: -20,
+            scale: 0.5,
+            opacity: 0,
+            filter: "blur(10px)"
+        },
+        {
+            y: 0,
+            scale: 1,
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "elastic.out(1, 0.8)"
+        },
+        "-=0.4"
+    );
+
+    // Skills Pop - Using fromTo for robustness
+    tl.fromTo('.tree-skill-node',
+        {
+            y: 20,
+            opacity: 0,
+            scale: 0.8
+        },
+        {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 0.4,
+            stagger: 0.03,
+            ease: "power2.out"
+        },
+        "-=0.3"
+    );
+}
+
+// Initialize Skill Tree
+document.addEventListener('DOMContentLoaded', () => {
+    // Wait for GSAP and Layout
+    setTimeout(() => {
+        initSkillTree();
+        // Force refresh ScrollTrigger and Lenis after DOM updates
+        ScrollTrigger.refresh();
+        if (lenis) lenis.resize();
+    }, 800);
+});
+
